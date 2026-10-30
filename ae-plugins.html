@@ -69,7 +69,7 @@
             background: var(--ma-lime);
         }
 
-        /* ==================== PER-PLUGIN DETAILED KINETIC TEXT ANIMATION ENGINE ==================== */
+        /* ==================== PER-PLUGIN DETAILED KINETIC TEXT ANIMATION ENGINE (V2 - ZERO DUPLICATES) ==================== */
         .ma-char, .ma-word {
             display: inline-block;
             will-change: transform, opacity, filter;
@@ -78,81 +78,130 @@
             margin-right: 0.28em;
         }
 
-        @keyframes kfSlideRight {
-            0% { opacity: 0; transform: translate3d(-44px, 0, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(var(--overshoot-x, 0px), 0, 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(24px, 0, 0); filter: blur(var(--b-start, 0px)); }
+        @keyframes kfUniversalMaster {
+            0% {
+                opacity: var(--op-start, 1);
+                transform: translate3d(var(--tx-start, 0px), var(--ty-start, 0px), 0)
+                           scale3d(var(--sx-start, 1), var(--sy-start, 1), 1)
+                           rotate(var(--rot-start, 0deg))
+                           skewX(var(--skew-start, 0deg));
+                filter: blur(var(--blur-start, 0px));
+            }
+            42% {
+                opacity: 1;
+                transform: translate3d(var(--tx-over, 0px), var(--ty-over, 0px), 0)
+                           scale3d(var(--s-over, 1), var(--s-over, 1), 1)
+                           rotate(0deg)
+                           skewX(0deg);
+                filter: blur(0px);
+            }
+            58% {
+                opacity: 1;
+                transform: translate3d(var(--tx-rebound, 0px), var(--ty-rebound, 0px), 0)
+                           scale3d(var(--s-rebound, 1), var(--s-rebound, 1), 1)
+                           rotate(0deg)
+                           skewX(0deg);
+                filter: blur(0px);
+            }
+            72%, 88% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate(0deg) skewX(0deg);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: var(--op-start, 1);
+                transform: translate3d(calc(var(--tx-start, 0px) * -0.45), calc(var(--ty-start, 0px) * -0.45), 0)
+                           scale3d(var(--sx-end, 0.92), var(--sy-end, 0.92), 1);
+                filter: blur(var(--blur-start, 0px));
+            }
         }
-        @keyframes kfSlideLeft {
-            0% { opacity: 0; transform: translate3d(44px, 0, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(calc(var(--overshoot-x, 0px) * -1), 0, 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(-24px, 0, 0); filter: blur(var(--b-start, 0px)); }
+        @keyframes kfGravityBounce {
+            0% { opacity: 0; transform: translateY(-52px) scaleY(1.25) scaleX(0.85); }
+            28% { opacity: 1; transform: translateY(0px) scaleY(0.75) scaleX(1.22); }
+            44% { transform: translateY(-22px) scaleY(1.08) scaleX(0.94); }
+            58% { transform: translateY(0px) scaleY(0.88) scaleX(1.10); }
+            70% { transform: translateY(-7px) scaleY(1.02) scaleX(0.98); }
+            80%, 92% { opacity: 1; transform: translateY(0px) scale(1); }
+            100% { opacity: 0; transform: translateY(18px) scale(0.9); }
         }
-        @keyframes kfSlideUp {
-            0% { opacity: 0; transform: translate3d(0, 38px, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(0, calc(var(--overshoot-y, 0px) * -1), 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(0, -22px, 0); filter: blur(var(--b-start, 0px)); }
+        @keyframes kfWaveSine {
+            0%, 100% { transform: translateY(-9px) rotate(-3deg); }
+            50% { transform: translateY(9px) rotate(3deg); }
         }
-        @keyframes kfSlideDown {
-            0% { opacity: 0; transform: translate3d(0, -38px, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(0, var(--overshoot-y, 0px), 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(0, 22px, 0); filter: blur(var(--b-start, 0px)); }
+        @keyframes kfAmbientFloat {
+            0%, 100% { transform: translate3d(-4px, -6px, 0) scale(1); }
+            50% { transform: translate3d(4px, 6px, 0) scale(1.04); }
         }
-        @keyframes kfScaleDynamic {
-            0% { opacity: 0; transform: scale3d(var(--sx-start, 0.15), var(--sy-start, 0.15), 1) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            42% { opacity: 1; transform: scale3d(var(--s-mid, 1.0), var(--s-mid, 1.0), 1) rotate(0deg); filter: blur(0px); }
-            58% { opacity: 1; transform: scale3d(var(--s-settle, 1.0), var(--s-settle, 1.0), 1) rotate(0deg); filter: blur(0px); }
-            86% { opacity: 1; transform: scale3d(1, 1, 1) rotate(0deg); filter: blur(0px); }
-            100% { opacity: 0; transform: scale3d(0.85, 0.85, 1); filter: blur(var(--b-start, 0px)); }
+        @keyframes kfBreathingPulse {
+            0%, 100% { transform: scale(0.94); opacity: 0.78; letter-spacing: 0.04em; }
+            50% { transform: scale(1.08); opacity: 1; letter-spacing: 0.14em; filter: drop-shadow(0 0 14px rgba(212,255,0,0.5)); }
+        }
+        @keyframes kfSlamImpact {
+            0% { opacity: 0; transform: scale(2.8); filter: blur(8px); }
+            22% { opacity: 1; transform: scale(0.88); filter: blur(0px); }
+            30% { transform: translate(-5px, 3px) scale(1.04); }
+            36% { transform: translate(5px, -3px) scale(0.98); }
+            42% { transform: translate(-3px, -2px) scale(1.01); }
+            50%, 88% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: scale(0.75); }
+        }
+        @keyframes kfStompRhythm {
+            0%, 18% { transform: scale(1); }
+            24% { transform: scale(1.32) rotate(-2deg); color: #d4ff00; }
+            36%, 54% { transform: scale(1) rotate(0deg); color: #ffffff; }
+            60% { transform: scale(1.28) rotate(2deg); color: #38bdf8; }
+            72%, 100% { transform: scale(1) rotate(0deg); color: #ffffff; }
         }
         @keyframes kfFlicker {
-            0% { opacity: 0; filter: blur(var(--b-start, 0px)) brightness(0.4); }
-            12% { opacity: 1; filter: blur(0px) brightness(1.8) drop-shadow(0 0 12px #d4ff00); }
-            20% { opacity: 0.12; }
-            28% { opacity: 0.95; }
-            36% { opacity: 0.22; }
-            46% { opacity: 1; filter: brightness(1.35) drop-shadow(0 0 16px #38bdf8); }
-            88% { opacity: 1; }
-            94% { opacity: 0.15; }
+            0% { opacity: 0; filter: blur(var(--blur-start, 0px)) brightness(0.3); }
+            10% { opacity: 1; filter: blur(0px) brightness(2.0) drop-shadow(0 0 14px #d4ff00); }
+            16% { opacity: 0.08; }
+            24% { opacity: 0.95; }
+            30% { opacity: 0.15; }
+            38% { opacity: 1; filter: brightness(1.5) drop-shadow(0 0 18px #38bdf8); }
+            44% { opacity: 0.35; }
+            52%, 86% { opacity: 1; filter: brightness(1.2); }
+            92% { opacity: 0.1; }
             100% { opacity: 0; }
         }
         @keyframes kfTracking {
-            0% { opacity: 0; letter-spacing: var(--ls-start, -0.06em); filter: blur(var(--b-start, 6px)); transform: scale(0.94); }
-            45% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1); }
-            85% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1.02); }
-            100% { opacity: 0; letter-spacing: calc(var(--ls-end, 0.28em) * 1.15); filter: blur(6px); }
+            0% { opacity: var(--op-start, 0); letter-spacing: var(--ls-start, -0.08em); filter: blur(var(--blur-start, 6px)); transform: scale(0.94); }
+            45% { opacity: 1; letter-spacing: var(--ls-end, 0.32em); filter: blur(0px); transform: scale(1); }
+            85% { opacity: 1; letter-spacing: var(--ls-end, 0.32em); filter: blur(0px); transform: scale(1.02); }
+            100% { opacity: var(--op-start, 0); letter-spacing: calc(var(--ls-end, 0.32em) * 1.18); filter: blur(6px); }
         }
-        @keyframes kfGlitch {
-            0%, 100% { transform: translate(0, 0) skewX(0deg); text-shadow: -3px 0 #ff0055, 3px 0 #00f0ff; }
-            18% { transform: translate(-5px, 2px) skewX(-8deg); text-shadow: 5px -2px #ff0055, -5px 2px #00f0ff; }
-            36% { transform: translate(5px, -2px) skewX(6deg); text-shadow: -4px 2px #d4ff00, 4px -2px #ff0055; }
-            54% { transform: translate(-3px, 0px) scaleY(1.06); text-shadow: 3px 0 #00f0ff, -3px 0 #ff0055; }
-            72% { transform: translate(4px, 2px) skewX(-4deg); text-shadow: -5px 0 #ff0055, 5px 0 #00f0ff; }
+        @keyframes kfRgbSplit {
+            0%, 100% { transform: translate(0, 0) skewX(0deg); text-shadow: -4px 0 #ff0055, 4px 0 #00f0ff; }
+            20% { transform: translate(-6px, 2px) skewX(-10deg); text-shadow: 6px -2px #ff0055, -6px 2px #00f0ff; }
+            40% { transform: translate(6px, -2px) skewX(8deg); text-shadow: -5px 2px #d4ff00, 5px -2px #ff0055; }
+            60% { transform: translate(-3px, 1px) scaleY(1.08); text-shadow: 4px 0 #00f0ff, -4px 0 #ff0055; }
+            80% { transform: translate(4px, -1px) skewX(-5deg); text-shadow: -6px 0 #ff0055, 6px 0 #00f0ff; }
         }
         @keyframes kfFlip3D {
-            0% { opacity: 0; transform: perspective(500px) rotateX(var(--rx-start, -85deg)) rotateY(var(--ry-start, 0deg)) translateZ(-30px); filter: blur(var(--b-start, 0px)); }
-            48% { opacity: 1; transform: perspective(500px) rotateX(8deg) rotateY(0deg) translateZ(0px); filter: blur(0px); }
-            68% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0px); }
-            88% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg); }
-            100% { opacity: 0; transform: perspective(500px) rotateX(65deg); }
+            0% { opacity: var(--op-start, 0); transform: perspective(500px) rotateX(var(--rx-start, -88deg)) rotateY(var(--ry-start, 0deg)) translateZ(-28px); filter: blur(var(--blur-start, 0px)); }
+            46% { opacity: 1; transform: perspective(500px) rotateX(10deg) rotateY(0deg) translateZ(0px); filter: blur(0px); }
+            65%, 88% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0px); }
+            100% { opacity: var(--op-start, 0); transform: perspective(500px) rotateX(70deg); }
+        }
+        @keyframes kfKaraokeSweep {
+            0%, 10% { background-size: 0% 100%; }
+            55%, 85% { background-size: 100% 100%; }
+            100% { background-size: 0% 100%; }
         }
         @keyframes kfHormoziPop {
             0%, 15% { background-color: transparent; color: #ffffff; transform: scale(1); }
-            25%, 65% { background-color: #d4ff00; color: #080a16; transform: scale(1.12) rotate(-1.5deg); box-shadow: 0 6px 20px rgba(212,255,0,0.45); }
+            25%, 65% { background-color: #d4ff00; color: #080a16; transform: scale(1.14) rotate(-2deg); box-shadow: 0 6px 20px rgba(212,255,0,0.45); }
             75%, 100% { background-color: transparent; color: #ffffff; transform: scale(1); }
         }
         @keyframes kfLowerThirdBar {
             0% { transform: scaleY(0); opacity: 0; }
-            25%, 85% { transform: scaleY(1); opacity: 1; }
+            20%, 85% { transform: scaleY(1); opacity: 1; }
             100% { transform: scaleY(0); opacity: 0; }
+        }
+        @keyframes kfHorizontalExpand {
+            0% { width: 0%; opacity: 0; }
+            25%, 85% { width: 100%; opacity: 1; }
+            100% { width: 0%; opacity: 0; }
         }
         @keyframes kfPlayheadScrub {
             0% { width: 0%; }
@@ -162,8 +211,8 @@
         .ma-card:hover .anim-unit,
         .auto-preview-all .anim-unit,
         .live-monitor-active .anim-unit {
-            animation-name: var(--kf-name, kfSlideUp);
-            animation-duration: var(--kf-dur, 1.9s);
+            animation-name: var(--kf-name, kfUniversalMaster);
+            animation-duration: var(--kf-dur, 2.0s);
             animation-timing-function: var(--kf-ease, cubic-bezier(0.22, 1, 0.36, 1));
             animation-delay: var(--kf-delay, 0ms);
             animation-iteration-count: infinite;
@@ -177,25 +226,62 @@
             padding: 0.05em 0.28em;
             border-radius: 0.35em;
         }
+        .ma-card:hover .karaoke-fill,
+        .auto-preview-all .karaoke-fill,
+        .live-monitor-active .karaoke-fill {
+            background-image: linear-gradient(90deg, #d4ff00, #38bdf8);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: rgba(255,255,255,0.28);
+            animation: kfKaraokeSweep 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        }
         .ma-card:hover .lt-accent-bar,
         .auto-preview-all .lt-accent-bar,
         .live-monitor-active .lt-accent-bar {
             animation: kfLowerThirdBar 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
+        .ma-card:hover .lt-horiz-line,
+        .auto-preview-all .lt-horiz-line,
+        .live-monitor-active .lt-horiz-line {
+            animation: kfHorizontalExpand 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        }
         .ma-card:hover .card-timeline-fill,
         .auto-preview-all .card-timeline-fill {
-            animation: kfPlayheadScrub var(--kf-dur, 1.9s) linear infinite;
+            animation: kfPlayheadScrub var(--kf-dur, 2.0s) linear infinite;
         }
 
-        @keyframes kfTransitionWipe {
-            0%, 18% { clip-path: inset(0 100% 0 0); transform: scale(1.15); filter: blur(8px) brightness(1.4); }
-            45%, 80% { clip-path: inset(0 0% 0 0); transform: scale(1); filter: blur(0px) brightness(1); }
-            95%, 100% { clip-path: inset(0 0 0 100%); transform: scale(1.1); filter: blur(6px); }
+        @keyframes kfMotionWipe {
+            0%, 15% { clip-path: inset(0 100% 0 0); transform: scale(1.12); filter: blur(6px); }
+            45%, 80% { clip-path: inset(0 0% 0 0); transform: scale(1); filter: blur(0px); }
+            95%, 100% { clip-path: inset(0 0 0 100%); transform: scale(1.08); }
         }
-        .ma-card:hover .motion-clip-b,
-        .auto-preview-all .motion-clip-b {
-            animation: kfTransitionWipe 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        @keyframes kfMotionZoom {
+            0%, 15% { opacity: 0; transform: scale(0.35) rotate(-6deg); filter: blur(10px); }
+            45%, 80% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0px); }
+            95%, 100% { opacity: 0; transform: scale(1.85) rotate(6deg); filter: blur(10px); }
         }
+        @keyframes kfMotionSpin {
+            0%, 15% { opacity: 0; transform: scale(0.5) rotate(-95deg); filter: blur(8px); }
+            45%, 80% { opacity: 1; transform: scale(1) rotate(0deg); filter: blur(0px); }
+            95%, 100% { opacity: 0; transform: scale(1.3) rotate(95deg); filter: blur(8px); }
+        }
+        @keyframes kfMotionWhip {
+            0%, 15% { opacity: 0; transform: translateX(-100%) skewX(-25deg); filter: blur(14px); }
+            42%, 80% { opacity: 1; transform: translateX(0%) skewX(0deg); filter: blur(0px); }
+            95%, 100% { opacity: 0; transform: translateX(100%) skewX(25deg); filter: blur(14px); }
+        }
+        @keyframes kfMotionTunnel {
+            0% { transform: scale(0.85) rotate(0deg); filter: hue-rotate(0deg) contrast(1.3); }
+            50% { transform: scale(1.28) rotate(180deg); filter: hue-rotate(180deg) contrast(1.6); }
+            100% { transform: scale(0.85) rotate(360deg); filter: hue-rotate(360deg) contrast(1.3); }
+        }
+        .ma-card:hover .motion-clip-b, .auto-preview-all .motion-clip-b { animation: kfMotionWipe 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+        .ma-card:hover .motion-zoom, .auto-preview-all .motion-zoom { animation: kfMotionZoom 2.4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+        .ma-card:hover .motion-spin, .auto-preview-all .motion-spin { animation: kfMotionSpin 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+        .ma-card:hover .motion-whip, .auto-preview-all .motion-whip { animation: kfMotionWhip 2.1s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+        .ma-card:hover .motion-tunnel, .auto-preview-all .motion-tunnel { animation: kfMotionTunnel 3.2s linear infinite; }
 
         .text-bg-cardboard {
             background: radial-gradient(circle at 50% 35%, #e5d8c1 0%, #cbb898 65%, #b39d7b 100%);
@@ -824,85 +910,194 @@
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
             const lower = `${rawName} ${p.subcategory || ''} ${p.previewType || ''}`.toLowerCase();
 
+            let layoutType = 'standard';
             let unit = 'letter';
             let unitLabel = 'LETTER-BY-LETTER';
-            if (lower.includes('backingbox') || lower.includes('subtitle') || lower.includes('align')) {
-                unit = 'lowerthird';
-                unitLabel = 'SUBTITLE BACKING BOX';
-            } else if (lower.includes('hormozi') || lower.includes('karaoke') || lower.includes('highlight')) {
-                unit = 'hormozi';
-                unitLabel = 'WORD HIGHLIGHT POP';
-            } else if (lower.includes('typewriter') || lower.includes('cursor') || lower.includes('countup') || lower.includes('clock') || lower.includes('timecode')) {
-                unit = 'typewriter';
-                unitLabel = 'TYPEWRITER / COUNTER';
-            } else if (lower.includes('tracking') || lower.includes('reverb') || lower.includes('floating') || lower.includes('breathing')) {
+            let kfName = 'kfUniversalMaster';
+            let dirLabel = 'KINETIC SLIDE';
+
+            let opStart = '0';
+            let txStart = '0px';
+            let tyStart = '38px';
+            let txOver = '0px';
+            let tyOver = '0px';
+            let txRebound = '0px';
+            let tyRebound = '0px';
+            let sxStart = '1';
+            let syStart = '1';
+            let sOver = '1';
+            let sRebound = '1';
+            let rotStart = '0deg';
+            let skewStart = '0deg';
+            let blurStart = '0px';
+            let rxStart = '-88deg';
+            let ryStart = '0deg';
+            let lsStart = '-0.06em';
+            let lsEnd = '0.28em';
+            let kfEase = 'cubic-bezier(0.22, 1, 0.36, 1)';
+            let staggerMs = 45;
+
+            if (lower.includes('dollar') || lower.includes('currency')) {
+                layoutType = 'countup-dollar';
+                unitLabel = 'CURRENCY COUNTER';
+                dirLabel = '$0 → $99,450';
+            } else if (lower.includes('percentage')) {
+                layoutType = 'countup-percent';
+                unitLabel = 'PERCENTAGE COUNTER';
+                dirLabel = '0% → 100% PROGRESS';
+            } else if (lower.includes('clock') || lower.includes('timecode')) {
+                layoutType = 'digital-clock';
+                unitLabel = 'TIMECODE GENERATOR';
+                dirLabel = '00:01:24:18';
+            } else if (lower.includes('countup') || lower.includes('timer')) {
+                layoutType = 'countup-timer';
+                unitLabel = 'NUMBER COUNTER';
+                dirLabel = '0000 → 9999';
+            } else if (lower.includes('backingbox v2') || lower.includes('backingbox_v2')) {
+                layoutType = 'backingbox-v2';
+                unitLabel = 'AUTO BACKING BOX V2';
+                dirLabel = 'ROUNDED LIME PILL';
+            } else if (lower.includes('backingbox v4') || lower.includes('backingbox_v4')) {
+                layoutType = 'backingbox-v4';
+                unitLabel = 'AUTO BACKING BOX V4';
+                dirLabel = 'CYBER BORDER BOX';
+            } else if (lower.includes('backingbox v7') || lower.includes('backingbox_v7')) {
+                layoutType = 'backingbox-v7';
+                unitLabel = 'AUTO BACKING BOX V7';
+                dirLabel = 'GRADIENT RIBBON TAG';
+            } else if (lower.includes('backingbox') || lower.includes('backing')) {
+                layoutType = 'backingbox-v8';
+                unitLabel = 'AUTO BACKING BOX V8';
+                dirLabel = '3D SHADOW CALLOUT';
+            } else if (lower.includes('align') || lower.includes('margin') || lower.includes('clean')) {
+                layoutType = 'text-align-grid';
+                unitLabel = 'TEXT ALIGNMENT RIG';
+                dirLabel = 'AUTO GRID & MARGINS';
+            } else if (lower.includes('split half') || lower.includes('wipe')) {
+                layoutType = 'split-half-wipe';
+                unitLabel = 'SPLIT HALF WIPE';
+                dirLabel = 'DUAL MASK REVEAL';
+            } else if (lower.includes('hormozi') || lower.includes('tiktok')) {
+                layoutType = 'sub-hormozi';
+                unitLabel = 'HORMOZI WORD POP';
+                dirLabel = 'ACTIVE WORD HIGHLIGHT';
+            } else if (lower.includes('karaoke') || lower.includes('highlight')) {
+                layoutType = 'sub-karaoke';
+                unitLabel = 'KARAOKE SWEEP';
+                dirLabel = 'GRADIENT FILL WIPE';
+            } else if (lower.includes('door swing') || lower.includes('swing y')) {
+                layoutType = '3d-door-swing';
+                unitLabel = '3D DOOR SWING Y';
+                dirLabel = 'ROTATE-Y 90° HINGE';
+                kfName = 'kfFlip3D';
+                rxStart = '0deg';
+                ryStart = '-90deg';
+            } else if (lower.includes('card flip') || lower.includes('flip x') || lower.includes('3d')) {
+                layoutType = '3d-card-flip';
+                unitLabel = '3D CARD FLIP X';
+                dirLabel = 'ROTATE-X 90° FLIP';
+                kfName = 'kfFlip3D';
+                rxStart = '-90deg';
+                ryStart = '0deg';
+            } else if (lower.includes('floating') || lower.includes('ambient')) {
+                layoutType = 'cine-float';
+                unitLabel = 'AMBIENT FLOAT';
+                dirLabel = 'ZERO-GRAVITY DRIFT';
+                kfName = 'kfAmbientFloat';
+            } else if (lower.includes('breathing') || lower.includes('reverb')) {
+                layoutType = 'cine-breath';
+                unitLabel = 'BREATHING SCALE';
+                dirLabel = 'SINE SCALE PULSE';
+                kfName = 'kfBreathingPulse';
+            } else if (lower.includes('tracking')) {
                 unit = 'tracking';
-                unitLabel = 'TRACKING EXPANDER';
+                unitLabel = 'TRACKING EXPAND';
+                dirLabel = 'WIDE LETTER SPACING';
+                kfName = 'kfTracking';
             } else if (lower.includes('glitch') || lower.includes('rgb')) {
                 unit = 'glitch';
                 unitLabel = 'RGB SPLIT GLITCH';
-            } else if (lower.includes('word') || lower.includes('cascade')) {
-                unit = 'word';
-                unitLabel = 'WORD-BY-WORD CASCADE';
-            }
-
-            let kfName = 'kfSlideUp';
-            let dirLabel = 'KINETIC SLIDE';
-            if (lower.includes('diagonal') || lower.includes('slide')) {
-                kfName = 'kfSlideRight';
-                dirLabel = 'DIAGONAL SLIDE →';
-            } else if (lower.includes('drop')) {
-                kfName = 'kfSlideDown';
-                dirLabel = '↓ ELASTIC DROP';
+                dirLabel = 'CHROMATIC JITTER';
+                kfName = 'kfRgbSplit';
             } else if (lower.includes('flicker') || lower.includes('neon')) {
+                unitLabel = 'NEON FLICKER GLOW';
+                dirLabel = 'ELECTRIC STROBE';
                 kfName = 'kfFlicker';
-                dirLabel = 'NEON FLICKER GLOW';
-            } else if (unit === 'tracking') {
-                kfName = 'kfTracking';
-                dirLabel = 'TRACKING EXPAND';
-            } else if (unit === 'glitch') {
-                kfName = 'kfGlitch';
-                dirLabel = 'RGB JITTER SHAKE';
-            } else if (lower.includes('3d') || lower.includes('flip') || lower.includes('swing')) {
-                kfName = 'kfFlip3D';
-                dirLabel = '3D CARD FLIP';
-            } else if (lower.includes('bounce') || lower.includes('elastic') || lower.includes('overshoot') || lower.includes('zoom') || lower.includes('stomp') || lower.includes('defocus')) {
-                kfName = 'kfScaleDynamic';
-                dirLabel = lower.includes('defocus') ? 'OPTICAL DEFOCUS' : 'INERTIAL BOUNCE';
+            } else if (lower.includes('stomp')) {
+                unit = 'word';
+                unitLabel = 'RHYTHM STOMP';
+                dirLabel = 'BEAT IMPACT POP';
+                kfName = 'kfStompRhythm';
+            } else if (lower.includes('gravity') || lower.includes('drop')) {
+                unitLabel = 'ELASTIC DROP';
+                dirLabel = 'GRAVITY BOUNCE';
+                kfName = 'kfGravityBounce';
+            } else if (lower.includes('wave') || lower.includes('ripple')) {
+                unitLabel = 'WAVE SINE';
+                dirLabel = 'CONTINUOUS WAVE';
+                kfName = 'kfWaveSine';
+            } else {
+                if (lower.includes('word') || lower.includes('cascade')) {
+                    unit = 'word';
+                    unitLabel = 'WORD CASCADE';
+                    staggerMs = 115;
+                }
+                if (lower.includes('diagonal')) {
+                    txStart = '-42px';
+                    tyStart = '36px';
+                    dirLabel = '↗ DIAGONAL SLIDE';
+                } else if (lower.includes('right')) {
+                    txStart = '-48px';
+                    tyStart = '0px';
+                    dirLabel = '→ SLIDE RIGHT';
+                } else if (lower.includes('left')) {
+                    txStart = '48px';
+                    tyStart = '0px';
+                    dirLabel = '← SLIDE LEFT';
+                }
+                if (lower.includes('defocus') || lower.includes('blur')) {
+                    blurStart = '12px';
+                    dirLabel = 'OPTICAL DEFOCUS';
+                }
+                if (lower.includes('bounce') || lower.includes('elastic') || lower.includes('overshoot') || lower.includes('zoom')) {
+                    sxStart = lower.includes('zoom out') ? '1.85' : '0.18';
+                    syStart = lower.includes('zoom out') ? '1.85' : '0.18';
+                    sOver = '1.26';
+                    sRebound = '0.91';
+                    kfEase = 'cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    dirLabel = lower.includes('zoom out') ? 'ZOOM OUT SNAP' : 'INERTIAL BOUNCE';
+                }
             }
-
-            const hasBlur = lower.includes('defocus') || lower.includes('blur');
-            const hasBounce = lower.includes('bounce') || lower.includes('elastic') || lower.includes('overshoot') || lower.includes('stomp');
-            const isZoomOut = lower.includes('zoom out');
-
-            const bStart = hasBlur ? '10px' : '0px';
-            const sxStart = isZoomOut ? '1.75' : '0.18';
-            const syStart = isZoomOut ? '1.75' : '0.18';
-            const sMid = hasBounce ? '1.24' : '1.0';
-            const sSettle = hasBounce ? '0.92' : '1.0';
-            const kfEase = hasBounce ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'cubic-bezier(0.22, 1, 0.36, 1)';
-            const staggerMs = unit === 'word' ? 115 : 45;
 
             const modTags = [unitLabel, dirLabel, p.ext];
-            let descMy = `After Effects ${unitLabel} (${dirLabel}) ပုံစံဖြင့် အလိုအလျောက် အလုပ်လုပ်သည့် Text Animation`;
+            const descMy = `After Effects ${unitLabel} (${dirLabel}) ပုံစံဖြင့် အလုပ်လုပ်သည့် Text Animation`;
 
             return {
                 rawName,
+                layoutType,
                 unit,
                 unitLabel,
                 dirLabel,
                 kfName,
                 kfEase,
-                bStart,
-                rStart: '0deg',
+                opStart,
+                txStart,
+                tyStart,
+                txOver,
+                tyOver,
+                txRebound,
+                tyRebound,
                 sxStart,
                 syStart,
-                sMid,
-                sSettle,
-                overshootX: hasBounce ? '10px' : '0px',
-                overshootY: hasBounce ? '10px' : '0px',
-                lsStart: '-0.05em',
-                lsEnd: '0.28em',
+                sOver,
+                sRebound,
+                rotStart,
+                skewStart,
+                blurStart,
+                rxStart,
+                ryStart,
+                lsStart,
+                lsEnd,
                 staggerMs,
                 fpsBadge: p.ext,
                 modTags,
@@ -918,27 +1113,106 @@
         function buildKineticTextInnerHtml(p, customTextStr, isLargeMonitor = false) {
             const m = analyzeTextPluginMechanics(p);
             const textToUse = (customTextStr && customTextStr.trim()) ? customTextStr.trim() : m.rawName;
-            const styleVars = `--kf-name:${m.kfName}; --kf-ease:${m.kfEase}; --b-start:${m.bStart}; --r-start:${m.rStart}; --sx-start:${m.sxStart}; --sy-start:${m.syStart}; --s-start:${m.sxStart}; --s-mid:${m.sMid}; --s-settle:${m.sSettle}; --overshoot-x:${m.overshootX}; --overshoot-y:${m.overshootY}; --ls-start:${m.lsStart}; --ls-end:${m.lsEnd};`;
+            const styleVars = `--kf-name:${m.kfName}; --kf-ease:${m.kfEase}; --op-start:${m.opStart}; --tx-start:${m.txStart}; --ty-start:${m.tyStart}; --tx-over:${m.txOver}; --ty-over:${m.tyOver}; --tx-rebound:${m.txRebound}; --ty-rebound:${m.tyRebound}; --sx-start:${m.sxStart}; --sy-start:${m.syStart}; --s-over:${m.sOver}; --s-rebound:${m.sRebound}; --rot-start:${m.rotStart}; --skew-start:${m.skewStart}; --blur-start:${m.blurStart}; --rx-start:${m.rxStart}; --ry-start:${m.ryStart}; --ls-start:${m.lsStart}; --ls-end:${m.lsEnd};`;
             const sizeCls = isLargeMonitor ? 'text-2xl sm:text-4xl' : 'text-base sm:text-lg';
 
-            if (m.unit === 'lowerthird') {
-                return `
-                    <div class="w-full flex items-center justify-center px-3" style="${styleVars}">
-                        <div class="flex items-stretch gap-2.5 bg-[#d4ff00] text-slate-950 rounded-xl p-2.5 px-4 shadow-2xl">
-                            <div class="anim-unit font-black ${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'} leading-tight">
+            switch (m.layoutType) {
+                case 'countup-dollar':
+                    return `
+                        <div class="w-full flex flex-col items-center justify-center">
+                            <span class="text-[9px] font-mono text-emerald-300 uppercase tracking-widest mb-1">REVENUE COUNTER EXPRESSION</span>
+                            <div class="px-4 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-400/50 text-[#d4ff00] font-mono font-black ${isLargeMonitor ? 'text-3xl sm:text-5xl' : 'text-xl sm:text-2xl'} shadow-lg anim-unit" style="--kf-name:kfUniversalMaster; --sx-start:0.5; --sy-start:0.5; --s-over:1.15;">
+                                $98,450.00
+                            </div>
+                        </div>
+                    `;
+                case 'countup-percent':
+                    return `
+                        <div class="w-full max-w-[240px] mx-auto flex flex-col items-center">
+                            <div class="flex items-baseline justify-between w-full mb-1">
+                                <span class="text-[9px] font-mono text-cyan-300 uppercase">${textToUse.slice(0, 16)}</span>
+                                <span class="font-mono font-black text-[#d4ff00] ${isLargeMonitor ? 'text-2xl' : 'text-lg'}">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 rounded-full bg-black/70 border border-white/15 overflow-hidden p-0.5">
+                                <div class="lt-horiz-line h-full rounded-full bg-gradient-to-r from-cyan-400 to-[#d4ff00]"></div>
+                            </div>
+                        </div>
+                    `;
+                case 'digital-clock':
+                    return `
+                        <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/90 border border-red-500/45 shadow-xl">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                            <span class="font-mono font-black text-white tracking-widest ${isLargeMonitor ? 'text-2xl sm:text-4xl' : 'text-base sm:text-xl'}">00:01:24:18</span>
+                        </div>
+                    `;
+                case 'countup-timer':
+                    return `
+                        <div class="inline-flex flex-col items-center px-4 py-1.5 rounded-xl bg-slate-950/90 border border-[#d4ff00]/40">
+                            <span class="text-[8px] font-mono text-slate-400 uppercase">SLIDER CONTROL COUNTUP</span>
+                            <span class="font-mono font-black text-[#d4ff00] tracking-wider ${isLargeMonitor ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'} anim-unit" style="${styleVars}">04,892</span>
+                        </div>
+                    `;
+                case 'backingbox-v2':
+                    return `
+                        <div class="inline-flex items-center px-5 py-2 rounded-full bg-[#d4ff00] text-slate-950 font-black uppercase shadow-[0_8px_25px_rgba(212,255,0,0.45)] anim-unit" style="--kf-name:kfUniversalMaster; --sx-start:0.2; --sy-start:0.2; --s-over:1.18;">
+                            <span class="${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-xs sm:text-sm'}">${textToUse}</span>
+                        </div>
+                    `;
+                case 'backingbox-v4':
+                    return `
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-950/95 border-2 border-cyan-400 text-white font-black uppercase shadow-[4px_4px_0px_#22d3ee] anim-unit" style="${styleVars}">
+                            <span class="w-2 h-2 bg-cyan-400 rotate-45"></span>
+                            <span class="${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-xs sm:text-sm'}">${textToUse}</span>
+                        </div>
+                    `;
+                case 'backingbox-v7':
+                    return `
+                        <div class="inline-flex items-center px-4 py-1.5 -skew-x-12 bg-gradient-to-r from-fuchsia-600 to-indigo-600 text-white font-black uppercase shadow-xl anim-unit" style="${styleVars}">
+                            <span class="skew-x-12 ${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-xs sm:text-sm'}">${textToUse}</span>
+                        </div>
+                    `;
+                case 'backingbox-v8':
+                    return `
+                        <div class="inline-flex items-center px-4 py-2 rounded-xl bg-white text-slate-950 border-2 border-slate-950 font-black uppercase shadow-[5px_5px_0px_#d4ff00] anim-unit" style="${styleVars}">
+                            <span class="${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-xs sm:text-sm'}">${textToUse}</span>
+                        </div>
+                    `;
+                case 'text-align-grid':
+                    return `
+                        <div class="w-full max-w-[250px] mx-auto p-2 rounded-lg border border-dashed border-[#d4ff00]/60 bg-black/50 flex flex-col gap-1">
+                            <div class="flex justify-between text-[8px] font-mono text-[#d4ff00]"><span>╠ LEFT ALIGN</span><span>MARGIN RIG ╣</span></div>
+                            <div class="anim-unit font-bold text-white ${isLargeMonitor ? 'text-lg sm:text-2xl' : 'text-xs sm:text-sm'} truncate" style="${styleVars}">${textToUse}</div>
+                        </div>
+                    `;
+                case 'split-half-wipe':
+                    return `
+                        <div class="w-full flex flex-col items-center">
+                            <div class="overflow-hidden border-b border-[#d4ff00]/60 pb-0.5">
+                                <div class="anim-unit font-display font-black uppercase text-white ${sizeCls}" style="--kf-name:kfUniversalMaster; --ty-start:28px;">${textToUse}</div>
+                            </div>
+                            <div class="overflow-hidden pt-0.5 opacity-75">
+                                <div class="anim-unit font-display font-black uppercase text-[#d4ff00] text-xs tracking-widest" style="--kf-name:kfUniversalMaster; --ty-start:-24px;">SPLIT HALF REVEAL</div>
+                            </div>
+                        </div>
+                    `;
+                case 'sub-hormozi': {
+                    const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
+                    const spans = words.slice(0, 7).map((w, idx) =>
+                        `<span class="hormozi-word inline-block font-black uppercase mx-0.5" style="--kf-delay:${idx * 310}ms;">${w}</span>`
+                    ).join('');
+                    return `<div class="${sizeCls} font-display font-black tracking-tight leading-snug">${spans}</div>`;
+                }
+                case 'sub-karaoke':
+                    return `
+                        <div class="w-full flex flex-col items-center justify-center px-3">
+                            <div class="karaoke-fill font-display font-black uppercase ${sizeCls} tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
                                 ${textToUse}
                             </div>
                         </div>
-                    </div>
-                `;
-            }
-
-            if (m.unit === 'hormozi') {
-                const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
-                const spans = words.slice(0, 8).map((w, idx) =>
-                    `<span class="hormozi-word inline-block font-black uppercase mx-1" style="--kf-delay:${idx * 320}ms;">${w}</span>`
-                ).join('');
-                return `<div class="${sizeCls} font-display font-black tracking-tight leading-snug">${spans}</div>`;
+                    `;
+                case 'cine-float':
+                case 'cine-breath':
+                    return `<div class="anim-unit ${sizeCls} font-black uppercase text-white tracking-wider drop-shadow-[0_4px_18px_rgba(0,0,0,0.9)]" style="${styleVars}">${textToUse}</div>`;
             }
 
             if (m.unit === 'tracking' || m.unit === 'glitch') {
@@ -958,7 +1232,9 @@
                 if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
                 return `<span class="ma-char anim-unit" style="${styleVars} --kf-delay:${idx * m.staggerMs}ms;">${ch}</span>`;
             }).join('');
-            const cursorHtml = m.unit === 'typewriter' ? `<span class="inline-block w-2 h-5 bg-[#d4ff00] ml-1 animate-pulse align-middle"></span>` : '';
+            const cursorHtml = m.rawName.toLowerCase().includes('typewriter') || m.rawName.toLowerCase().includes('cursor')
+                ? `<span class="inline-block w-2 h-5 bg-[#d4ff00] ml-1 animate-pulse align-middle"></span>`
+                : '';
             return `<div class="${sizeCls} font-black uppercase text-white tracking-wide leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">${charSpans}${cursorHtml}</div>`;
         }
 
@@ -1131,6 +1407,7 @@
 
         function buildMotionPluginCardHtml(p, idx) {
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
+            const lower = rawName.toLowerCase() + ' ' + (p.subcategory || '').toLowerCase();
             const safeNameAttr = p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const clipA = SAMPLE_VIDEOS[idx % SAMPLE_VIDEOS.length];
             const clipB = SAMPLE_VIDEOS[(idx + 1) % SAMPLE_VIDEOS.length];
@@ -1139,26 +1416,56 @@
             if (currentOrientation === 'vertical') aspectCls = 'aspect-[9/13] max-h-[360px] mx-auto';
             else if (currentOrientation === 'square') aspectCls = 'aspect-square max-h-[320px] mx-auto';
 
+            let motionClass = 'motion-clip-b';
+            let motionTag = 'AE MOTION SCRIPT';
+            let overlayGraphic = '';
+
+            if (lower.includes('duik') || lower.includes('bone') || lower.includes('ik') || lower.includes('rig') || lower.includes('walk') || lower.includes('controller')) {
+                motionClass = 'motion-spin';
+                motionTag = 'DUIK RIGGING / IK';
+                overlayGraphic = `
+                    <div class="flex items-center gap-1.5 mb-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/50 text-amber-300 text-[9px] font-mono">
+                        <span>🦴 IK JOINT</span><span>───●───</span><span>CONTROLLER</span>
+                    </div>
+                `;
+            } else if (lower.includes('ease') || lower.includes('wizz') || lower.includes('expo') || lower.includes('elastic') || lower.includes('bounce') || lower.includes('back')) {
+                motionClass = 'motion-zoom';
+                motionTag = 'EASE & WIZZ CURVE';
+                overlayGraphic = `
+                    <svg class="w-16 h-7 mb-1 stroke-[#d4ff00] fill-none" viewBox="0 0 64 28" stroke-width="2.2">
+                        <path d="M2 26 C 20 26, 24 2, 44 6 C 52 8, 56 4, 62 4"/>
+                    </svg>
+                `;
+            } else if (lower.includes('slide') || lower.includes('whip') || lower.includes('shifter') || lower.includes('stagger')) {
+                motionClass = 'motion-whip';
+                motionTag = 'LAYER SHIFTER / SLIDE';
+            } else if (p.id % 3 === 1) {
+                motionClass = 'motion-zoom';
+            } else if (p.id % 3 === 2) {
+                motionClass = 'motion-whip';
+            }
+
             return `
                 <div
                     class="ma-card group relative rounded-xl overflow-hidden bg-[#101324] border border-[#1f2442] hover:border-[#d4ff00] transition-all duration-300 shadow-lg hover:shadow-[0_12px_35px_rgba(0,0,0,0.8)] cursor-pointer select-none"
                     onclick="openPluginDownloadGateway('${p.id}', '${safeNameAttr}', '${p.dataUri}', '${p.sizeKb} KB', '${p.filename}')"
                 >
                     <div class="relative w-full ${aspectCls} bg-black overflow-hidden">
-                        <video src="${clipA}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover"></video>
-                        <div class="motion-clip-b absolute inset-0">
+                        <video src="${clipA}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-75"></video>
+                        <div class="${motionClass} absolute inset-0">
                             <video src="${clipB}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/40"></div>
 
-                        <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-sky-500/90 text-slate-950 text-[9px] font-mono font-black uppercase">
-                            🚀 AE MOTION / RIGGING
+                        <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-sky-400 text-slate-950 text-[9px] font-mono font-black uppercase">
+                            🚀 ${motionTag}
                         </div>
                         <div class="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded bg-black/75 text-white text-[9px] font-mono font-bold border border-white/15">
                             ${p.ext}
                         </div>
 
                         <div class="absolute inset-0 flex flex-col items-center justify-center p-4 pb-10 text-center z-10 pointer-events-none">
+                            ${overlayGraphic}
                             <span class="text-[9px] font-mono text-sky-300 uppercase tracking-widest mb-1">${p.subcategory}</span>
                             <h4 class="font-display text-base sm:text-lg font-black uppercase text-white tracking-wide drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] line-clamp-2">
                                 ${rawName}
@@ -1184,6 +1491,7 @@
 
         function buildEffectPluginCardHtml(p, idx) {
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
+            const lower = rawName.toLowerCase() + ' ' + (p.subcategory || '').toLowerCase();
             const safeNameAttr = p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const vidSrc = SAMPLE_VIDEOS[(idx + 2) % SAMPLE_VIDEOS.length];
             const hue = (p.id * 47) % 360;
@@ -1191,6 +1499,19 @@
             let aspectCls = 'aspect-video';
             if (currentOrientation === 'vertical') aspectCls = 'aspect-[9/13] max-h-[360px] mx-auto';
             else if (currentOrientation === 'square') aspectCls = 'aspect-square max-h-[320px] mx-auto';
+
+            let shaderFilter = `contrast(1.4) saturate(1.9) hue-rotate(${hue}deg)`;
+            let shaderBadge = '✨ AE VFX PRESET';
+            if (lower.includes('infrared')) {
+                shaderFilter = 'contrast(1.45) saturate(2.2) hue-rotate(135deg)';
+                shaderBadge = '🌡️ INFRARED THERMAL';
+            } else if (lower.includes('boil') || lower.includes('turbulent') || lower.includes('displace')) {
+                shaderFilter = `contrast(1.38) saturate(1.65) hue-rotate(${(hue + 50) % 360}deg)`;
+                shaderBadge = '🌊 LINE BOIL / TURBULENCE';
+            } else if (lower.includes('halftone') || lower.includes('retro') || lower.includes('grain')) {
+                shaderFilter = 'contrast(1.48) sepia(0.35) saturate(1.4)';
+                shaderBadge = '🎞️ HALFTONE / TEXTURE';
+            }
 
             return `
                 <div
@@ -1201,12 +1522,12 @@
                     <div class="relative w-full ${aspectCls} bg-black overflow-hidden">
                         <video src="${vidSrc}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-85"></video>
                         <div class="card-split-after absolute inset-0" style="clip-path: inset(0 0 0 42%);">
-                            <video src="${vidSrc}" autoplay loop muted playsinline class="w-full h-full object-cover" style="filter: contrast(1.4) saturate(1.9) hue-rotate(${hue}deg);"></video>
+                            <video src="${vidSrc}" autoplay loop muted playsinline class="w-full h-full object-cover" style="filter: ${shaderFilter};"></video>
                         </div>
                         <div class="card-split-line absolute inset-y-0 w-[1.5px] bg-fuchsia-400 shadow-[0_0_10px_#e879f9] z-20 pointer-events-none" style="left: 42%;"></div>
 
                         <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-fuchsia-500/90 text-white text-[9px] font-mono font-black uppercase">
-                            ✨ AE VFX PRESET
+                            ${shaderBadge}
                         </div>
                         <div class="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded bg-black/75 text-white text-[9px] font-mono font-bold border border-white/15">
                             ${p.ext}

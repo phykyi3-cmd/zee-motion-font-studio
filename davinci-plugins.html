@@ -79,104 +79,178 @@
             margin-right: 0.28em;
         }
 
-        /* 1. Slide Right (Letter or Word) */
-        @keyframes kfSlideRight {
-            0% { opacity: 0; transform: translate3d(-44px, 0, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(var(--overshoot-x, 0px), 0, 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(24px, 0, 0); filter: blur(var(--b-start, 0px)); }
+        /* Universal Parameterized Master Keyframe (drives exact combinations of Slide, Scale, Rotate, Blur, Fade & Bounce) */
+        @keyframes kfUniversalMaster {
+            0% {
+                opacity: var(--op-start, 0);
+                transform: translate3d(var(--tx-start, 0px), var(--ty-start, 0px), 0) scale3d(var(--sx-start, 1), var(--sy-start, 1), 1) rotate(var(--rot-start, 0deg)) skewX(var(--skew-start, 0deg));
+                filter: blur(var(--blur-start, 0px));
+            }
+            42% {
+                opacity: 1;
+                transform: translate3d(var(--tx-over, 0px), var(--ty-over, 0px), 0) scale3d(var(--s-over, 1), var(--s-over, 1), 1) rotate(var(--rot-over, 0deg)) skewX(0deg);
+                filter: blur(0px);
+            }
+            58% {
+                opacity: 1;
+                transform: translate3d(var(--tx-rebound, 0px), var(--ty-rebound, 0px), 0) scale3d(var(--s-rebound, 1), var(--s-rebound, 1), 1) rotate(0deg);
+                filter: blur(0px);
+            }
+            74%, 88% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate(0deg) skewX(0deg);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: var(--op-start, 0);
+                transform: translate3d(calc(var(--tx-start, 0px) * -0.45), calc(var(--ty-start, 0px) * -0.45), 0) scale3d(0.92, 0.92, 1);
+                filter: blur(var(--blur-start, 0px));
+            }
         }
-        /* 2. Slide Left (Letter or Word) */
-        @keyframes kfSlideLeft {
-            0% { opacity: 0; transform: translate3d(44px, 0, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(calc(var(--overshoot-x, 0px) * -1), 0, 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(-24px, 0, 0); filter: blur(var(--b-start, 0px)); }
+
+        /* Gravity Multi-Bounce Floor Drop */
+        @keyframes kfGravityBounce {
+            0% { opacity: 0; transform: translateY(-68px) scaleY(1.18); }
+            28% { opacity: 1; transform: translateY(0px) scaleX(1.18) scaleY(0.82); }
+            44% { transform: translateY(-28px) scaleX(0.95) scaleY(1.06); }
+            60% { transform: translateY(0px) scaleX(1.08) scaleY(0.92); }
+            72% { transform: translateY(-10px) scale(1); }
+            84%, 92% { opacity: 1; transform: translateY(0px) scale(1); }
+            100% { opacity: 0; transform: translateY(25px); }
         }
-        /* 3. Slide Up (Letter or Word) */
-        @keyframes kfSlideUp {
-            0% { opacity: 0; transform: translate3d(0, 38px, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(0, calc(var(--overshoot-y, 0px) * -1), 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(0, -22px, 0); filter: blur(var(--b-start, 0px)); }
+
+        /* Continuous Sine Wave Ripple */
+        @keyframes kfWaveSine {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-14px) rotate(-3deg); color: #d4ff00; }
+            75% { transform: translateY(12px) rotate(3deg); color: #38bdf8; }
         }
-        /* 4. Slide Down (Letter or Word) */
-        @keyframes kfSlideDown {
-            0% { opacity: 0; transform: translate3d(0, -38px, 0) scale(var(--s-start, 1)) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            45% { opacity: 1; transform: translate3d(0, var(--overshoot-y, 0px), 0) scale(var(--s-mid, 1)) rotate(0deg); filter: blur(0px); }
-            65% { opacity: 1; transform: translate3d(0, 0, 0) scale(1) rotate(0deg); filter: blur(0px); }
-            88% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: translate3d(0, 22px, 0); filter: blur(var(--b-start, 0px)); }
+
+        /* Ambient Zero-Gravity Float */
+        @keyframes kfAmbientFloat {
+            0%, 100% { transform: translate3d(0, -8px, 0) rotate(-1.5deg); }
+            50% { transform: translate3d(0, 9px, 0) rotate(1.5deg); }
         }
-        /* 5. Scale / Pop / Bounce / Rotate / Stretch */
-        @keyframes kfScaleDynamic {
-            0% { opacity: 0; transform: scale3d(var(--sx-start, 0.15), var(--sy-start, 0.15), 1) rotate(var(--r-start, 0deg)); filter: blur(var(--b-start, 0px)); }
-            42% { opacity: 1; transform: scale3d(var(--s-mid, 1.0), var(--s-mid, 1.0), 1) rotate(0deg); filter: blur(0px); }
-            58% { opacity: 1; transform: scale3d(var(--s-settle, 1.0), var(--s-settle, 1.0), 1) rotate(0deg); filter: blur(0px); }
-            86% { opacity: 1; transform: scale3d(1, 1, 1) rotate(0deg); filter: blur(0px); }
-            100% { opacity: 0; transform: scale3d(0.85, 0.85, 1); filter: blur(var(--b-start, 0px)); }
+
+        /* Slow Breathing Pulse */
+        @keyframes kfBreathingPulse {
+            0%, 100% { transform: scale(0.92); opacity: 0.72; filter: drop-shadow(0 0 4px rgba(255,255,255,0.2)); }
+            50% { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 18px rgba(212,255,0,0.65)); }
         }
-        /* 6. Flicker / Neon Strobe */
+
+        /* Heavy Camera Slam Impact + Tremor */
+        @keyframes kfSlamImpact {
+            0% { opacity: 0; transform: scale(3.1) rotate(-4deg); filter: blur(10px); }
+            22% { opacity: 1; transform: scale(0.90) rotate(1deg); filter: blur(0px); }
+            28% { transform: translate(-5px, 4px) scale(1.04); }
+            34% { transform: translate(5px, -4px) scale(0.98); }
+            40% { transform: translate(-3px, -2px) scale(1.01); }
+            46%, 88% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(0.75); }
+        }
+
+        /* Rhythmic Double Stomp Punch */
+        @keyframes kfStompRhythm {
+            0% { opacity: 0; transform: scale(2.1); }
+            18% { opacity: 1; transform: scale(0.92); }
+            30% { transform: scale(1.0); }
+            48% { transform: scale(1.48); color: #d4ff00; }
+            60%, 88% { opacity: 1; transform: scale(1.0); color: #ffffff; }
+            100% { opacity: 0; transform: scale(0.8); }
+        }
+
+        /* Flicker / Neon Strobe */
         @keyframes kfFlicker {
-            0% { opacity: 0; filter: blur(var(--b-start, 0px)) brightness(0.4); }
-            12% { opacity: 1; filter: blur(0px) brightness(1.8) drop-shadow(0 0 12px #d4ff00); }
-            20% { opacity: 0.12; }
-            28% { opacity: 0.95; }
-            36% { opacity: 0.22; }
-            46% { opacity: 1; filter: brightness(1.35) drop-shadow(0 0 16px #38bdf8); }
-            88% { opacity: 1; }
-            94% { opacity: 0.15; }
+            0% { opacity: 0; filter: blur(var(--blur-start, 0px)) brightness(0.3); }
+            10% { opacity: 1; filter: blur(0px) brightness(2.0) drop-shadow(0 0 14px #d4ff00); }
+            18% { opacity: 0.08; }
+            26% { opacity: 0.95; }
+            34% { opacity: 0.18; }
+            44% { opacity: 1; filter: brightness(1.4) drop-shadow(0 0 16px #38bdf8); }
+            86% { opacity: 1; }
+            93% { opacity: 0.12; }
             100% { opacity: 0; }
         }
-        /* 7. Cinematic Tracking Expand / Contract */
+
+        /* Concert Strobe Impact Flash */
+        @keyframes kfStrobeFlash {
+            0%, 20%, 40%, 60%, 80%, 100% { opacity: 1; transform: scale(1); filter: invert(0); }
+            10%, 30%, 50% { opacity: 0.15; transform: scale(1.09); filter: invert(1) drop-shadow(0 0 18px #fff); }
+            70% { opacity: 1; transform: scale(1.14); color: #d4ff00; }
+        }
+
+        /* Cinematic Tracking Expand / Contract */
         @keyframes kfTracking {
-            0% { opacity: 0; letter-spacing: var(--ls-start, -0.06em); filter: blur(var(--b-start, 6px)); transform: scale(0.94); }
-            45% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1); }
-            85% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1.02); }
-            100% { opacity: 0; letter-spacing: calc(var(--ls-end, 0.28em) * 1.15); filter: blur(6px); }
+            0% { opacity: 0; letter-spacing: var(--ls-start, -0.06em); filter: blur(var(--blur-start, 4px)); transform: scale(var(--sx-start, 0.94)); }
+            48% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1); }
+            86% { opacity: 1; letter-spacing: var(--ls-end, 0.28em); filter: blur(0px); transform: scale(1.02); }
+            100% { opacity: 0; letter-spacing: var(--ls-end, 0.28em); filter: blur(6px); }
         }
-        /* 8. RGB Chromatic Glitch Jitter */
-        @keyframes kfGlitch {
-            0%, 100% { transform: translate(0, 0) skewX(0deg); text-shadow: -3px 0 #ff0055, 3px 0 #00f0ff; }
-            18% { transform: translate(-5px, 2px) skewX(-8deg); text-shadow: 5px -2px #ff0055, -5px 2px #00f0ff; }
-            36% { transform: translate(5px, -2px) skewX(6deg); text-shadow: -4px 2px #d4ff00, 4px -2px #ff0055; }
-            54% { transform: translate(-3px, 0px) scaleY(1.06); text-shadow: 3px 0 #00f0ff, -3px 0 #ff0055; }
-            72% { transform: translate(4px, 2px) skewX(-4deg); text-shadow: -5px 0 #ff0055, 5px 0 #00f0ff; }
+
+        /* RGB Chromatic Split Distance */
+        @keyframes kfRgbSplit {
+            0%, 100% { text-shadow: -10px 0 #ff004c, 10px 0 #00f7ff; transform: scale(0.96); }
+            35% { text-shadow: 7px -2px #ff004c, -7px 2px #00f7ff; transform: scale(1.04) skewX(-5deg); }
+            55%, 85% { text-shadow: -1.5px 0 #ff004c, 1.5px 0 #00f7ff; transform: scale(1) skewX(0deg); }
         }
-        /* 9. 3D Flip X / Swing Y */
+
+        /* VHS Horizontal Tracking Glitch */
+        @keyframes kfVhsTracking {
+            0%, 100% { transform: translateX(0) skewX(0deg); clip-path: inset(0 0 0 0); }
+            20% { transform: translateX(-8px) skewX(-12deg); filter: hue-rotate(45deg); }
+            25% { transform: translateX(10px) skewX(8deg); }
+            30%, 80% { transform: translateX(0) skewX(0deg); filter: hue-rotate(0deg); }
+            85% { transform: translateX(-6px) scaleY(1.08); }
+        }
+
+        /* 3D Flip X / Swing Y */
         @keyframes kfFlip3D {
-            0% { opacity: 0; transform: perspective(500px) rotateX(var(--rx-start, -85deg)) rotateY(var(--ry-start, 0deg)) translateZ(-30px); filter: blur(var(--b-start, 0px)); }
-            48% { opacity: 1; transform: perspective(500px) rotateX(8deg) rotateY(0deg) translateZ(0px); filter: blur(0px); }
-            68% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0px); }
-            88% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg); }
+            0% { opacity: 0; transform: perspective(500px) rotateX(var(--rx-start, -85deg)) rotateY(var(--ry-start, 0deg)) translateZ(-30px); }
+            48% { opacity: 1; transform: perspective(500px) rotateX(8deg) rotateY(0deg) translateZ(0px); }
+            68%, 88% { opacity: 1; transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0px); }
             100% { opacity: 0; transform: perspective(500px) rotateX(65deg); }
         }
-        /* 10. Karaoke / Hormozi Word Pill Highlight */
+
+        /* Karaoke Fill Sweep */
+        @keyframes kfKaraokeSweep {
+            0% { background-size: 0% 100%; }
+            65%, 88% { background-size: 100% 100%; }
+            100% { background-size: 0% 100%; }
+        }
+
+        /* Hormozi Multi-Color Word Pop */
         @keyframes kfHormoziPop {
             0%, 15% { background-color: transparent; color: #ffffff; transform: scale(1); }
-            25%, 65% { background-color: #d4ff00; color: #080a16; transform: scale(1.12) rotate(-1.5deg); box-shadow: 0 6px 20px rgba(212,255,0,0.45); }
-            75%, 100% { background-color: transparent; color: #ffffff; transform: scale(1); }
+            25%, 62% { background-color: var(--pop-bg, #d4ff00); color: #080a16; transform: scale(1.16) rotate(var(--pop-rot, -2deg)); box-shadow: 0 6px 20px rgba(212,255,0,0.45); }
+            72%, 100% { background-color: transparent; color: #ffffff; transform: scale(1); }
         }
-        /* 11. Lower Third Bar Wipe */
+
+        /* Lower Third Specific Animations */
         @keyframes kfLowerThirdBar {
             0% { transform: scaleY(0); opacity: 0; }
-            25%, 85% { transform: scaleY(1); opacity: 1; }
+            20%, 85% { transform: scaleY(1); opacity: 1; }
             100% { transform: scaleY(0); opacity: 0; }
+        }
+        @keyframes kfHorizontalExpand {
+            0% { transform: scaleX(0); opacity: 0; }
+            25%, 85% { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(0); opacity: 0; }
+        }
+        @keyframes kfTickerScroll {
+            0% { transform: translateX(25%); }
+            100% { transform: translateX(-65%); }
         }
         @keyframes kfPlayheadScrub {
             0% { width: 0%; }
             100% { width: 100%; }
         }
 
-        /* Trigger animations when card is hovered OR when Live Play mode is enabled OR inside Live Monitor */
+        /* Trigger animations */
         .ma-card:hover .anim-unit,
         .auto-preview-all .anim-unit,
         .live-monitor-active .anim-unit {
-            animation-name: var(--kf-name, kfSlideUp);
-            animation-duration: var(--kf-dur, 1.9s);
+            animation-name: var(--kf-name, kfUniversalMaster);
+            animation-duration: var(--kf-dur, 2.0s);
             animation-timing-function: var(--kf-ease, cubic-bezier(0.22, 1, 0.36, 1));
             animation-delay: var(--kf-delay, 0ms);
             animation-iteration-count: infinite;
@@ -185,30 +259,71 @@
         .ma-card:hover .hormozi-word,
         .auto-preview-all .hormozi-word,
         .live-monitor-active .hormozi-word {
-            animation: kfHormoziPop 2.2s ease-in-out infinite;
+            animation: kfHormoziPop 2.1s ease-in-out infinite;
             animation-delay: var(--kf-delay, 0ms);
-            padding: 0.05em 0.28em;
+            padding: 0.06em 0.3em;
             border-radius: 0.35em;
+        }
+        .ma-card:hover .karaoke-fill-text,
+        .auto-preview-all .karaoke-fill-text,
+        .live-monitor-active .karaoke-fill-text {
+            background-image: linear-gradient(90deg, #d4ff00 0%, #38bdf8 100%);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: rgba(255,255,255,0.28);
+            animation: kfKaraokeSweep 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
         .ma-card:hover .lt-accent-bar,
         .auto-preview-all .lt-accent-bar,
         .live-monitor-active .lt-accent-bar {
             animation: kfLowerThirdBar 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
+        .ma-card:hover .lt-horiz-line,
+        .auto-preview-all .lt-horiz-line,
+        .live-monitor-active .lt-horiz-line {
+            animation: kfHorizontalExpand 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        }
+        .ma-card:hover .news-ticker-strip,
+        .auto-preview-all .news-ticker-strip,
+        .live-monitor-active .news-ticker-strip {
+            animation: kfTickerScroll 4.5s linear infinite;
+        }
         .ma-card:hover .card-timeline-fill,
         .auto-preview-all .card-timeline-fill {
-            animation: kfPlayheadScrub var(--kf-dur, 1.9s) linear infinite;
+            animation: kfPlayheadScrub var(--kf-dur, 2.0s) linear infinite;
         }
 
-        /* Motion Transition Dual-Clip Animation */
-        @keyframes kfTransitionWipe {
-            0%, 18% { clip-path: inset(0 100% 0 0); transform: scale(1.15); filter: blur(8px) brightness(1.4); }
-            45%, 80% { clip-path: inset(0 0% 0 0); transform: scale(1); filter: blur(0px) brightness(1); }
-            95%, 100% { clip-path: inset(0 0 0 100%); transform: scale(1.1); filter: blur(6px); }
+        /* Distinct Motion & Transition Animations */
+        @keyframes kfMotionWipe {
+            0%, 15% { clip-path: inset(0 100% 0 0); transform: scale(1.12); }
+            45%, 80% { clip-path: inset(0 0% 0 0); transform: scale(1); }
+            100% { clip-path: inset(0 0 0 100%); }
         }
-        .ma-card:hover .motion-clip-b,
-        .auto-preview-all .motion-clip-b {
-            animation: kfTransitionWipe 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+        @keyframes kfMotionZoom {
+            0%, 15% { opacity: 0; transform: scale(2.4); filter: blur(10px); }
+            45%, 80% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(0.4); filter: blur(8px); }
+        }
+        @keyframes kfMotionSpin {
+            0%, 15% { opacity: 0; transform: rotate(-180deg) scale(0.2); filter: blur(6px); }
+            45%, 80% { opacity: 1; transform: rotate(0deg) scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: rotate(180deg) scale(0.2); }
+        }
+        @keyframes kfMotionWhip {
+            0%, 15% { opacity: 0; transform: translateX(-100%) skewX(-25deg); filter: blur(14px); }
+            42%, 80% { opacity: 1; transform: translateX(0%) skewX(0deg); filter: blur(0px); }
+            100% { opacity: 0; transform: translateX(100%) skewX(25deg); filter: blur(14px); }
+        }
+        @keyframes kfMotionTunnel {
+            0% { transform: scale(0.65) rotate(0deg); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.35) rotate(12deg); filter: hue-rotate(120deg) contrast(1.4); }
+            100% { transform: scale(0.65) rotate(0deg); filter: hue-rotate(360deg); }
+        }
+        .ma-card:hover .motion-anim-layer,
+        .auto-preview-all .motion-anim-layer {
+            animation: var(--motion-kf, kfMotionWipe) 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
         }
 
         /* Art-directed Backdrop Presets for Text Cards */
@@ -897,137 +1012,359 @@
         function analyzeTextPluginMechanics(p) {
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
             const lower = `${rawName} ${p.subcategory || ''} ${p.previewType || ''}`.toLowerCase();
+            const is30Fps = lower.includes('30 fps');
+            const fpsBadge = is30Fps ? '30 FPS' : '60 FPS';
 
-            // 1. Frame rate
-            const is60Fps = lower.includes('60 fps') || (!lower.includes('30 fps'));
-            const fpsBadge = lower.includes('30 fps') ? '30 FPS' : '60 FPS';
-
-            // 2. Granularity Unit (Letter-by-Letter vs Word-by-Word vs LowerThird vs Hormozi vs Typewriter vs Tracking)
-            let unit = 'letter'; // default per-character
-            let unitLabel = 'LETTER-BY-LETTER';
-            if (lower.includes('lowerthird') || lower.includes('callout') || lower.includes('broadcast') || lower.includes('chapter') || lower.includes('handle') || lower.includes('subheading') || lower.includes('quote')) {
-                unit = 'lowerthird';
-                unitLabel = 'LOWER THIRD GRAPHIC';
-            } else if (lower.includes('hormozi') || lower.includes('karaoke') || lower.includes('pill') || lower.includes('reels') || lower.includes('subtitle') || lower.includes('youtube gaming')) {
-                unit = 'hormozi';
-                unitLabel = 'WORD HIGHLIGHT POP';
-            } else if (lower.includes('typewriter') || lower.includes('writeon') || lower.includes('terminal')) {
-                unit = 'typewriter';
-                unitLabel = 'TYPEWRITER CURSOR';
-            } else if (lower.includes('tracking') || lower.includes('a24') || lower.includes('luxury') || lower.includes('documentary') || lower.includes('editorial') || lower.includes('ambient')) {
-                unit = 'tracking';
-                unitLabel = 'CINEMATIC TRACKING';
-            } else if (lower.includes('glitch') || lower.includes('vhs') || lower.includes('rgb') || lower.includes('cyberpunk') || lower.includes('tricolor') || lower.includes('synthwave')) {
-                unit = 'glitch';
-                unitLabel = 'RGB GLITCH SPLIT';
-            } else if (lower.includes('word')) {
-                unit = 'word';
-                unitLabel = 'WORD-BY-WORD';
-            }
-
-            // 3. Exact Direction & Keyframe Vector
-            let kfName = 'kfSlideUp';
-            let dirLabel = 'SLIDE UP';
-            if (lower.includes('slide right')) {
-                kfName = 'kfSlideRight';
-                dirLabel = 'SLIDE RIGHT →';
-            } else if (lower.includes('slide left')) {
-                kfName = 'kfSlideLeft';
-                dirLabel = '← SLIDE LEFT';
-            } else if (lower.includes('slide down') || lower.includes('drop') || lower.includes('fadedown')) {
-                kfName = 'kfSlideDown';
-                dirLabel = '↓ SLIDE DOWN';
-            } else if (lower.includes('slide up') || lower.includes('fadeup')) {
-                kfName = 'kfSlideUp';
-                dirLabel = '↑ SLIDE UP';
-            } else if (lower.includes('flicker') || lower.includes('strobe') || lower.includes('neon')) {
-                kfName = 'kfFlicker';
-                dirLabel = 'NEON FLICKER';
-            } else if (unit === 'tracking') {
-                kfName = 'kfTracking';
-                dirLabel = lower.includes('contract') ? 'TRACKING CONTRACT' : 'TRACKING EXPAND';
-            } else if (unit === 'glitch') {
-                kfName = 'kfGlitch';
-                dirLabel = 'CHROMATIC JITTER';
-            } else if (lower.includes('3d') || lower.includes('flip')) {
-                kfName = 'kfFlip3D';
-                dirLabel = '3D CASCADE FLIP';
-            } else if (lower.includes('scale') || lower.includes('stretch') || lower.includes('strech') || lower.includes('pop') || lower.includes('slam') || lower.includes('stomp') || lower.includes('rotate') || lower.includes('fade') || lower.includes('blur') || lower.includes('defocus')) {
-                kfName = 'kfScaleDynamic';
-                if (lower.includes('scale out')) dirLabel = 'SCALE OUT';
-                else if (lower.includes('stretch') || lower.includes('strech')) dirLabel = 'STRETCH IN';
-                else if (lower.includes('rotate')) dirLabel = 'ROTATE IN';
-                else if (lower.includes('slam') || lower.includes('stomp')) dirLabel = 'IMPACT SLAM';
-                else dirLabel = 'SCALE & REVEAL';
-            }
-
-            // 4. Exact Physics Modifiers (Blur, Bounce, Rotate, Scale Out, Stretch)
+            // Detect exact modifiers from plugin name
+            const hasFade = lower.includes('fade') || lower.includes('scale') || lower.includes('blur') || lower.includes('defocus');
             const hasBlur = lower.includes('blur') || lower.includes('defocus');
             const hasBounce = lower.includes('bounce') || lower.includes('elastic') || lower.includes('pop') || lower.includes('snap');
-            const hasRotate = lower.includes('rotate') || lower.includes('diagonal');
-            const isScaleOut = lower.includes('scale out') || lower.includes('slam');
+            const hasRotate = lower.includes('rotate');
+            const isScaleOut = lower.includes('scale out');
+            const isScaleIn = lower.includes('scale in') || (lower.includes('scale') && !isScaleOut);
             const isStretch = lower.includes('stretch') || lower.includes('strech');
-            const isContract = lower.includes('contract');
+            const isRight = lower.includes('slide right');
+            const isLeft = lower.includes('slide left');
+            const isUp = lower.includes('slide up') || lower.includes('fadeup');
+            const isDown = lower.includes('slide down') || lower.includes('fadedown') || lower.includes('drop');
+            const isDiagonal = lower.includes('diagonal');
+            const isRandomFlicker = lower.includes('random flicker');
+            const isFlicker = lower.includes('flicker');
 
-            const bStart = hasBlur ? '9px' : '0px';
-            const rStart = hasRotate ? '-34deg' : '0deg';
-            const sxStart = isStretch ? '2.15' : (isScaleOut ? '1.75' : (lower.includes('scale') || hasBounce ? '0.18' : '1'));
-            const syStart = isStretch ? '0.55' : (isScaleOut ? '1.75' : (lower.includes('scale') || hasBounce ? '0.18' : '1'));
-            const sMid = hasBounce ? '1.22' : '1.0';
-            const sSettle = hasBounce ? '0.93' : '1.0';
-            const overshootX = hasBounce ? '10px' : '0px';
-            const overshootY = hasBounce ? '10px' : '0px';
-            const lsStart = isContract ? '0.42em' : '-0.05em';
-            const lsEnd = isContract ? '0.02em' : '0.28em';
-            const kfEase = hasBounce ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'cubic-bezier(0.22, 1, 0.36, 1)';
-            const staggerMs = unit === 'word' || unit === 'hormozi' ? 115 : (unit === 'typewriter' ? 75 : 42);
+            // Exact CSS variables for @keyframes kfUniversalMaster
+            const opStart = hasFade ? '0' : '1';
+            const txStart = isRight ? '-52px' : (isLeft ? '52px' : (isDiagonal ? '-46px' : '0px'));
+            const tyStart = isUp ? '40px' : (isDown ? '-40px' : (isDiagonal ? '40px' : '0px'));
+            const txOver = (hasBounce && isRight) ? '12px' : ((hasBounce && isLeft) ? '-12px' : '0px');
+            const tyOver = (hasBounce && isUp) ? '-10px' : ((hasBounce && isDown) ? '10px' : '0px');
+            const txRebound = (hasBounce && isRight) ? '-4px' : ((hasBounce && isLeft) ? '4px' : '0px');
+            const tyRebound = (hasBounce && isUp) ? '4px' : ((hasBounce && isDown) ? '-4px' : '0px');
 
-            const modTags = [unitLabel, dirLabel];
-            if (hasBlur) modTags.push('GAUSSIAN BLUR');
-            if (hasBounce) modTags.push('ELASTIC BOUNCE');
-            if (hasRotate) modTags.push('ROTATION');
-            modTags.push(fpsBadge);
+            const sxStart = isStretch ? '2.25' : (isScaleOut ? '1.85' : (isScaleIn ? '0.12' : '1'));
+            const syStart = isStretch ? '0.48' : (isScaleOut ? '1.85' : (isScaleIn ? '0.12' : '1'));
+            const sOver = (hasBounce && (isScaleIn || (!isRight && !isLeft && !isUp && !isDown))) ? '1.26' : '1.0';
+            const sRebound = (hasBounce && (isScaleIn || (!isRight && !isLeft && !isUp && !isDown))) ? '0.91' : '1.0';
+            const rotStart = hasRotate ? '-52deg' : (isDiagonal ? '-14deg' : '0deg');
+            const rotOver = (hasRotate && hasBounce) ? '10deg' : '0deg';
+            const skewStart = isStretch ? '-18deg' : (isDiagonal ? '-18deg' : '0deg');
+            const blurStart = hasBlur ? '11px' : '0px';
 
-            // Burmese human-readable explanation of how this specific plugin works
+            // 60 FPS smooth curve vs 30 FPS stepped cinema cadence
+            let kfEase = hasBounce ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'cubic-bezier(0.22, 1, 0.36, 1)';
+            if (is30Fps && !hasBounce) kfEase = 'steps(14, end)';
+
+            // Determine specialized layout & keyframe for each unique plugin
+            let specialLayout = null;
+            let kfName = 'kfUniversalMaster';
+            let unit = 'letter';
+            let unitLabel = 'LETTER-BY-LETTER';
+            let dirLabel = 'DYNAMIC REVEAL';
             let descMy = '';
-            if (unit === 'lowerthird') {
-                descMy = 'ဗီဒီယို၏ အောက်ခြေတွင် Accent Bar နှင့် ခေါင်းစဉ်စာသား စနစ်တကျ ပွင့်ထွက်လာသည့် Lower Third Title ပုံစံ';
-            } else if (unit === 'hormozi') {
-                descMy = 'TikTok / Reels စတိုင်လ် စကားလုံးတစ်လုံးချင်းစီ (Word-by-Word) အရောင်ဘောင်ဖြင့် ခုန်ထွက်လာသည့် Subtitle ပုံစံ';
-            } else if (unit === 'typewriter') {
-                descMy = 'လက်နှိပ်စက်ရိုက်သကဲ့သို့ စာလုံးတစ်လုံးချင်းစီ Cursor ဖြင့် ပေါ်လာသည့် Typewriter ပုံစံ';
-            } else if (unit === 'tracking') {
-                descMy = 'ရုပ်ရှင်ခေါင်းစဉ်ကြီးများကဲ့သို့ စာလုံးအကွာအဝေး (Tracking) ဖြည်းညင်းစွာ ချဲ့/ချုံ့၍ ပေါ်လာသည့် Cinematic ပုံစံ';
-            } else if (unit === 'glitch') {
-                descMy = 'RGB အရောင်သုံးထပ် (Red/Cyan) ကွဲထွက်ပြီး လျှပ်စစ်လှိုင်းကဲ့သို့ တုန်ခါသည့် Glitch Title ပုံစံ';
-            } else {
-                const uMy = unit === 'word' ? 'စကားလုံးတစ်လုံးချင်းစီ (Word-by-Word)' : 'စာလုံးတစ်လုံးချင်းစီ (Letter-by-Letter)';
-                const dMy = dirLabel.includes('RIGHT') ? 'ဘယ်မှညာသို့ လျှောဝင်ခြင်း' :
-                            dirLabel.includes('LEFT') ? 'ညာမှဘယ်သို့ လျှောဝင်ခြင်း' :
-                            dirLabel.includes('DOWN') ? 'အပေါ်မှအောက်သို့ ကျလာခြင်း' :
-                            dirLabel.includes('UP') ? 'အောက်မှအပေါ်သို့ တက်လာခြင်း' :
-                            dirLabel.includes('FLICKER') ? 'မီးချောင်းကဲ့သို့ လင်းလက်တုန်ခါခြင်း' : 'အရွယ်အစား ချဲ့/ချုံ့၍ ပေါ်လာခြင်း';
-                const extraMy = [hasBlur ? 'Motion Blur' : '', hasBounce ? 'Elastic Bounce' : '', hasRotate ? 'Rotation' : ''].filter(Boolean).join(' + ');
-                descMy = `${uMy} ${dMy}${extraMy ? ` (${extraMy} ပါဝင်သည်)` : ''}`;
+
+            // --- SPECIALIZED NAMED PLUGINS (IDs 1..43) ---
+            if (p.id === 1 || lower.includes('a24')) {
+                specialLayout = 'a24-luxury';
+                kfName = 'kfTracking';
+                unitLabel = 'A24 CINEMA SERIF';
+                dirLabel = 'LUXURY FRAME SCALE';
+                descMy = 'A24 ရုပ်ရှင်စတိုင်လ် Serif စာလုံးကြီးနှင့် အပေါ်/အောက် ဘောင်မျဉ်း ဖြည်းညင်းစွာ ချဲ့ထွက်လာသည့်ပုံစံ';
+            } else if (p.id === 2 || lower.includes('ambientfloating')) {
+                specialLayout = 'ambient-wave';
+                kfName = 'kfAmbientFloat';
+                unitLabel = 'ZERO-G FLOAT';
+                dirLabel = 'SINE WAVE DRIFT';
+                descMy = 'စာလုံးတစ်လုံးချင်းစီ အပေါ်နှင့်အောက် လေထဲတွင် မျောလွင့်နေသကဲ့သို့ ငြိမ့်ညောင်းစွာ လှုပ်ရှားသည့်ပုံစံ';
+            } else if (p.id === 3 || lower.includes('tracking contract')) {
+                specialLayout = 'tracking-contract';
+                kfName = 'kfTracking';
+                unitLabel = 'TRACKING CONTRACT';
+                dirLabel = '→← INWARD PULL';
+                descMy = 'အလွန်ကျယ်ပြန့်သော စာလုံးအကွာအဝေး (Wide Tracking) မှ အလယ်သို့ စုဝင်လာသည့် Cinematic ပုံစံ';
+            } else if (p.id === 4 || lower.includes('tracking expand')) {
+                specialLayout = 'tracking-expand';
+                kfName = 'kfTracking';
+                unitLabel = 'TRACKING EXPAND';
+                dirLabel = '←→ OUTWARD SPREAD';
+                descMy = 'စာလုံးများ ပူးကပ်နေရာမှ ဘေးနှစ်ဖက်သို့ ဖြည်းညင်းစွာ ချဲ့ထွက်သွားသည့် Wide Screen ပုံစံ';
+            } else if (p.id === 5 || lower.includes('documentary location')) {
+                specialLayout = 'doc-location';
+                unitLabel = 'ARCHIVE STAMP';
+                dirLabel = 'BORDER WIPE + TYPE';
+                descMy = 'Documentary မှတ်တမ်းရုပ်ရှင်များကဲ့သို့ ခုနှစ်/နေရာ Stamp နှင့် စာသား ဘယ်ဘက်မှ ပွင့်ထွက်လာသည့်ပုံစံ';
+            } else if (p.id === 6 || lower.includes('minimal editorial')) {
+                specialLayout = 'editorial-serif';
+                unit = 'word';
+                unitLabel = 'EDITORIAL SERIF';
+                dirLabel = 'STAGGERED WORD FADE';
+                descMy = 'မဂ္ဂဇင်းခေါင်းစဉ်ဒီဇိုင်းကဲ့သို့ Italic Serif နှင့် Sans စကားလုံးများ အစဉ်လိုက် ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 7 || lower.includes('opacityfadedown')) {
+                unit = 'letter';
+                unitLabel = 'CURTAIN DROP';
+                dirLabel = '↓ TOP-DOWN FADE';
+                descMy = 'အပေါ်ဘက်မှ အောက်သို့ စာလုံးတစ်လုံးချင်း ညင်သာစွာ ကျဆင်းပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 8 || lower.includes('opacityfadeup')) {
+                unit = 'letter';
+                unitLabel = 'CURTAIN RISE';
+                dirLabel = '↑ BOTTOM-UP FADE';
+                descMy = 'အောက်ဘက်မှ အပေါ်သို့ စာလုံးတစ်လုံးချင်း ညင်သာစွာ တက်လာသည့်ပုံစံ';
+            } else if (p.id === 9 || lower.includes('optical blur defocus')) {
+                specialLayout = 'optical-defocus';
+                unitLabel = 'LENS RACK FOCUS';
+                dirLabel = '18PX BLUR → SHARP';
+                descMy = 'ကင်မရာမှန်ဘီလူး Focus ချိန်သကဲ့သို့ ဝါးနေရာမှ ကြည်လင်ပြတ်သားလာသည့် Optical Defocus ပုံစံ';
+            } else if (p.id === 10 || lower.includes('breathing float')) {
+                specialLayout = 'breathing-pulse';
+                kfName = 'kfBreathingPulse';
+                unitLabel = 'AMBIENT PULSE';
+                dirLabel = 'BREATHING GLOW';
+                descMy = 'အသက်ရှူသကဲ့သို့ စာသားအရွယ်အစားနှင့် အလင်းရောင် မှန်မှန် ကြီးလိုက်သေးလိုက် လှုပ်ရှားသည့်ပုံစံ';
+            } else if (p.id === 11 || lower.includes('analog vhs')) {
+                specialLayout = 'vhs-osd';
+                kfName = 'kfVhsTracking';
+                unitLabel = 'VHS TAPE OSD';
+                dirLabel = '▶ PLAY TRACKING SKEW';
+                descMy = '၉၀ ခုနှစ် VHS တိပ်ခွေ ▶ PLAY 00:04:19 စာသားနှင့် လိုင်းထစ်ပြီး တုန်ခါသည့် Retro ပုံစံ';
+            } else if (p.id === 12 || lower.includes('cyberpunk hud')) {
+                specialLayout = 'cyber-hud';
+                kfName = 'kfFlicker';
+                unitLabel = 'SCI-FI HUD RETICLE';
+                dirLabel = '[ TARGET TELEMETRY ]';
+                descMy = 'Sci-Fi ကွန်ပျူတာ ပစ်မှတ်ဘောင် [SYS.HUD] နှင့် ဒစ်ဂျစ်တယ်ကိန်းဂဏန်းများ လင်းလက်ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 13 || lower.includes('matrix digital')) {
+                specialLayout = 'matrix-terminal';
+                unitLabel = 'MATRIX TERMINAL';
+                dirLabel = 'GREEN CODE DECODE';
+                descMy = 'အစိမ်းရောင် Matrix ကွန်ပျူတာကုဒ်စာလုံးများ တစ်လုံးချင်း Decode လုပ်၍ ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 14 || lower.includes('neon electric')) {
+                specialLayout = 'neon-tube';
+                kfName = 'kfFlicker';
+                unitLabel = 'NEON SIGN TUBE';
+                dirLabel = 'ELECTRIC IGNITE';
+                descMy = 'နီယွန်မီးချောင်း ဆိုင်းဘုတ် မီးခလုတ်ဖွင့်လိုက်သကဲ့သို့ တစ်လုံးချင်း လင်းလက်တောက်ပလာသည့်ပုံစံ';
+            } else if (p.id === 15 || lower.includes('rgb chromatic')) {
+                specialLayout = 'rgb-split';
+                kfName = 'kfRgbSplit';
+                unitLabel = 'RGB CHANNEL SPLIT';
+                dirLabel = 'RED / CYAN OFFSET';
+                descMy = 'အနီရောင်နှင့် အပြာနုရောင် (Red/Cyan) RGB အလွှာနှစ်ခု ဘယ်ညာကွဲထွက်ပြီး ပြန်ပေါင်းစည်းသည့်ပုံစံ';
+            } else if (p.id === 16 || lower.includes('synthwave')) {
+                specialLayout = 'synthwave-80s';
+                unitLabel = '80S SYNTHWAVE';
+                dirLabel = 'CHROME + NEON GRID';
+                descMy = '80s Retro Chrome သတ္တုရောင်စာလုံးနှင့် အောက်ခြေ Neon Grid မျဉ်းကွက် ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 17 || lower.includes('strobe fast')) {
+                specialLayout = 'strobe-impact';
+                kfName = 'kfStrobeFlash';
+                unitLabel = '15HZ STROBE FLASH';
+                dirLabel = 'INVERT IMPACT PULSE';
+                descMy = 'အဖြူနှင့်အမည်း လျှပ်စီးလက်သကဲ့သို့ အမြန်နှုန်းမြင့် Strobe Flash ရိုက်ခတ်သည့်ပုံစံ';
+            } else if (p.id === 18 || lower.includes('tricolor')) {
+                specialLayout = 'tricolor-stack';
+                unitLabel = 'TRI-COLOR ECHO';
+                dirLabel = '3-LAYER RGB WAVE';
+                descMy = 'အဝါ၊ ပန်းရောင်၊ အပြာနု စာသား (၃) ထပ် အပေါ်အောက် လှိုင်းကဲ့သို့ ခွဲထွက်လှုပ်ရှားသည့်ပုံစံ';
+            } else if (p.id === 19 || isDiagonal) {
+                unit = 'letter';
+                unitLabel = '45° DIAGONAL WHIP';
+                dirLabel = '↗ DIAGONAL SNAP';
+                descMy = 'ထောင့်ဖြတ် ၄၅ ဒီဂရီ လမ်းကြောင်းအတိုင်း အရှိန်ဖြင့် ပစ်ဝင်လာသည့် Kinetic ပုံစံ';
+            } else if (p.id === 20 || lower.includes('gravity drop')) {
+                kfName = 'kfGravityBounce';
+                unit = 'letter';
+                unitLabel = 'GRAVITY PHYSICS';
+                dirLabel = '⬇ FLOOR MULTI-BOUNCE';
+                descMy = 'အပေါ်မှ ကြမ်းပြင်ပေါ်သို့ ပြုတ်ကျပြီး ဘောလုံးကဲ့သို့ အဆင့်ဆင့် ပြန်ခုန်တက်သည့် Gravity ပုံစံ';
+            } else if (p.id === 21 || lower.includes('highspeed snap')) {
+                unit = 'word';
+                unitLabel = 'WHIP STRETCH SNAP';
+                dirLabel = '2.5X STRETCH → SNAP';
+                descMy = 'ဘေးတိုက် ဆွဲဆန့်ထားရာမှ Motion Blur ဖြင့် အလယ်သို့ လျင်မြန်စွာ ရိုက်ချက်ဝင်လာသည့်ပုံစံ';
+            } else if (p.id === 26 || lower.includes('stomp rhythm')) {
+                kfName = 'kfStompRhythm';
+                unit = 'word';
+                unitLabel = 'BEAT STOMP SYNC';
+                dirLabel = 'DOUBLE RHYTHM PUNCH';
+                descMy = 'သီချင်းစည်းချက် (Beat) အတိုင်း နှစ်ချက်ဆင့် ဆောင့်ချသည့် Stomp Rhythm ပုံစံ';
+            } else if (p.id === 27 || lower.includes('textslam')) {
+                kfName = 'kfSlamImpact';
+                unit = 'word';
+                unitLabel = '3.2X CAMERA SLAM';
+                dirLabel = 'HEAVY IMPACT SHAKE';
+                descMy = 'မျက်နှာပြင်အပြည့် (3.2x) မှ ဆောင့်ချလိုက်ပြီး ကင်မရာတုန်ခါသွားသည့် Heavy Slam ပုံစံ';
+            } else if (p.id === 28 || lower.includes('textwavereveal')) {
+                kfName = 'kfWaveSine';
+                unit = 'letter';
+                unitLabel = 'SINE WAVE RIPPLE';
+                dirLabel = '〰 CONTINUOUS WAVE';
+                descMy = 'ရေလှိုင်းတွန့်သကဲ့သို့ စာလုံးတစ်လုံးချင်း အပေါ်အောက် စဉ်ဆက်မပြတ် လှိုင်းထနေသည့်ပုံစံ';
             }
+            // --- 7 DISTINCT LOWER THIRDS & CALLOUTS (IDs 29..35) ---
+            else if (p.id === 29 || lower.includes('accent bar lowerthird')) {
+                specialLayout = 'lt-accent-bar';
+                unitLabel = 'ACCENT BAR WIPE';
+                dirLabel = '┃ BAR + MASK SLIDE →';
+                descMy = 'ဘယ်ဘက် ဒေါင်လိုက် Neon Bar အရင်ပွင့်ပြီးမှ အမည်နှင့် ရာထူးစာသား ဘယ်မှညာသို့ ထွက်လာသည့်ပုံစံ';
+            } else if (p.id === 30 || lower.includes('broadcast news')) {
+                specialLayout = 'lt-broadcast-news';
+                unitLabel = 'TV NEWS TICKER';
+                dirLabel = '🔴 LIVE + SCROLL BAR';
+                descMy = 'ရုပ်သံသတင်း LIVE တံဆိပ်၊ 3D ခေါင်းစဉ်ဘားနှင့် အောက်ခြေ သတင်းပြေးစာတန်း (Ticker) ပုံစံ';
+            } else if (p.id === 31 || lower.includes('chapter marker')) {
+                specialLayout = 'lt-chapter-marker';
+                unitLabel = 'CHAPTER TIMECODE';
+                dirLabel = '[ 01 // TIMECODE ]';
+                descMy = 'ဗီဒီယိုအခန်းခွဲ [CHAPTER 01 — 00:01:24] ဘောင်နှင့် Progress မျဉ်းတန်း ပွင့်ထွက်လာသည့်ပုံစံ';
+            } else if (p.id === 32 || lower.includes('location subheading')) {
+                specialLayout = 'lt-location-pin';
+                unitLabel = 'GPS LOCATION TAG';
+                dirLabel = '📍 PIN DROP + COORDS';
+                descMy = '📍 Map Pin အပေါ်မှ ခုန်ကျလာပြီး GPS တည်နေရာနှင့် မြို့အမည် Typewriter ဖြင့် ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 33 || lower.includes('minimal twoline')) {
+                specialLayout = 'lt-twoline-split';
+                unitLabel = 'TWO-LINE SPLIT';
+                dirLabel = '↕ CENTER LINE SPLIT';
+                descMy = 'အလယ်မျဉ်းကြောင်း ဆန့်ထွက်လာပြီး အပေါ်စာကြောင်းက အပေါ်သို့၊ အောက်စာကြောင်းက အောက်သို့ ခွဲထွက်သည့်ပုံစံ';
+            } else if (p.id === 34 || lower.includes('modern quote')) {
+                specialLayout = 'lt-quote-card';
+                unitLabel = 'EDITORIAL QUOTE';
+                dirLabel = '“ ” QUOTE CALLOUT';
+                descMy = 'မျက်တောင်ဖွင့်ပိတ် “ ... ” သင်္ကေတကြီးနှင့် ကောက်နုတ်ချက်စာသား လှပစွာ ပွင့်ထွက်လာသည့်ပုံစံ';
+            } else if (p.id === 35 || lower.includes('social handle')) {
+                specialLayout = 'lt-social-pill';
+                unitLabel = 'SOCIAL FOLLOW PILL';
+                dirLabel = '@HANDLE + SUBSCRIBE';
+                descMy = 'Social Media အကောင့် @Handle Pill ဘောင်နှင့် FOLLOW+ ခလုတ် ခုန်ထွက်လာသည့်ပုံစံ';
+            }
+            // --- 8 DISTINCT SUBTITLES & CAPTIONS (IDs 36..43) ---
+            else if (p.id === 36 || lower.includes('karaoke highlight')) {
+                specialLayout = 'sub-karaoke-sweep';
+                unitLabel = 'KARAOKE FILL SWEEP';
+                dirLabel = '━▶ PROGRESS COLOR FILL';
+                descMy = 'ကာရာအိုကေ စာသားကဲ့သို့ စကားလုံးများပေါ်တွင် အရောင်ဘားတန်း တစ်ဆက်တည်း ပြေးသွားသည့်ပုံစံ';
+            } else if (p.id === 37 || lower.includes('minimalist documentary subtitle')) {
+                specialLayout = 'sub-cinema-yellow';
+                unitLabel = 'CINEMA SUBTITLE';
+                dirLabel = 'SOFT OPTICAL RISE';
+                descMy = 'ရုပ်ရှင်ရုံ/Netflix စတိုင်လ် အဝါရောင် Subtitle စာတန်း ညင်သာစွာ ပေါ်လာသည့်ပုံစံ';
+            } else if (p.id === 38 || lower.includes('pill background')) {
+                specialLayout = 'sub-pill-expand';
+                unitLabel = 'EXPANDING PILL BOX';
+                dirLabel = '↔ PILL BOX POP';
+                descMy = 'အနောက်ခံ Pill ဘောင် အလျားလိုက် ဆန့်ထွက်လာပြီး စာသား ခုန်ပေါ်လာသည့် Caption ပုံစံ';
+            } else if (p.id === 39 || lower.includes('reels impact')) {
+                specialLayout = 'sub-reels-slam';
+                kfName = 'kfSlamImpact';
+                unitLabel = 'REELS IMPACT SLAM';
+                dirLabel = 'TILTED SLAM + SHAKE';
+                descMy = 'Reels/Shorts အတွက် စောင်းနေသော စာလုံးကြီးများ အရှိန်ဖြင့် ဆောင့်ချသည့် Impact Caption ပုံစံ';
+            } else if (p.id === 40 || lower.includes('hormozi')) {
+                specialLayout = 'sub-hormozi-multi';
+                unitLabel = 'HORMOZI 3-COLOR POP';
+                dirLabel = 'GREEN / YELLOW WORD POP';
+                descMy = 'Alex Hormozi စတိုင်လ် စကားလုံးတစ်လုံးချင်း အစိမ်းရောင်နှင့် အဝါရောင်ဘောင် အလှည့်ကျ ခုန်ထွက်သည့်ပုံစံ';
+            } else if (p.id === 41 || lower.includes('typewritersmoothfade')) {
+                unit = 'letter';
+                unitLabel = 'SMOOTH TYPEWRITER';
+                dirLabel = 'BLUR FADE WRITE-ON';
+                descMy = 'စာလုံးတစ်လုံးချင်းစီ Blur နှင့် Opacity ညင်သာစွာ ပေါင်းစပ်ပြီး ပေါ်လာသည့် Smooth Typewriter ပုံစံ';
+            } else if (p.id === 42 || lower.includes('typewriterwriteon')) {
+                specialLayout = 'sub-typewriter-cursor';
+                unitLabel = 'MECHANICAL TYPEWRITER';
+                dirLabel = 'STEP WRITE-ON + ▋';
+                descMy = 'လက်နှိပ်စက်ရိုက်သကဲ့သို့ Cursor ▋ တုတ်ချောင်းလေးနှင့် တစ်လုံးချင်း တိကျစွာ ရိုက်သွင်းသည့်ပုံစံ';
+            } else if (p.id === 43 || lower.includes('youtube gaming')) {
+                specialLayout = 'sub-gaming-3d';
+                unitLabel = 'GAMING 3D STROKE';
+                dirLabel = 'COMIC POP + SHADOW';
+                descMy = 'Gaming YouTuber စတိုင်လ် 3D အနားသတ်မျဉ်းထူနှင့် အရောင်တောက်သော စာလုံး ခုန်ထွက်လာသည့်ပုံစံ';
+            }
+            // --- 136 NEOEDIT 60FPS & 30FPS PARAMETERIZED PRESETS (IDs 596..731) ---
+            else {
+                if (lower.startsWith('word ') || lower.includes(' word ')) {
+                    unit = 'word';
+                    unitLabel = 'WORD-BY-WORD';
+                } else if (lower.startsWith('letter ') || lower.includes(' letter ')) {
+                    unit = 'letter';
+                    unitLabel = 'LETTER-BY-LETTER';
+                } else {
+                    unit = 'whole';
+                    unitLabel = 'FULL TITLE BLOCK';
+                }
+
+                if (isFlicker) {
+                    kfName = 'kfFlicker';
+                }
+
+                // Build exact direction + modifier label
+                const parts = [];
+                if (isRight) parts.push('SLIDE RIGHT →');
+                else if (isLeft) parts.push('← SLIDE LEFT');
+                else if (isUp) parts.push('↑ SLIDE UP');
+                else if (isDown) parts.push('↓ SLIDE DOWN');
+                else if (isStretch) parts.push('↔ STRETCH IN');
+                else if (isScaleOut) parts.push('↙ SCALE OUT');
+                else if (isScaleIn) parts.push('↗ SCALE IN');
+
+                if (hasRotate) parts.push('↻ ROTATE');
+                if (hasBlur) parts.push('BLUR');
+                if (lower.includes('fade')) parts.push('FADE');
+                else if (isRight || isLeft || isUp || isDown) parts.push('HARD MASK');
+                if (hasBounce) parts.push('BOUNCE');
+                if (isRandomFlicker) parts.push('RANDOM FLICKER');
+                else if (isFlicker) parts.push('FLICKER');
+
+                dirLabel = parts.join(' + ') || 'SMOOTH REVEAL';
+
+                // Build accurate Burmese description of the exact combination
+                const uMy = unit === 'word' ? 'စကားလုံးတစ်လုံးချင်း (Word-by-Word)' :
+                            unit === 'letter' ? 'စာလုံးတစ်လုံးချင်း (Letter-by-Letter)' : 'စာကြောင်းတစ်ခုလုံး (Full Title)';
+                const moveMy = isRight ? 'ဘယ်မှညာသို့ လျှောဝင်ခြင်း' :
+                               isLeft ? 'ညာမှဘယ်သို့ လျှောဝင်ခြင်း' :
+                               isUp ? 'အောက်မှအပေါ်သို့ တက်လာခြင်း' :
+                               isDown ? 'အပေါ်မှအောက်သို့ ကျလာခြင်း' :
+                               isStretch ? 'ဘေးတိုက်ဆွဲဆန့်၍ ဝင်လာခြင်း' :
+                               isScaleOut ? 'အကြီးမှ ပုံမှန်အရွယ်သို့ ချုံ့ဝင်ခြင်း' :
+                               isScaleIn ? 'အသေးမှ ချဲ့၍ပေါ်လာခြင်း' :
+                               isRandomFlicker ? 'စာလုံးများ အစီအစဉ်မဲ့ လင်းလက်တုန်ခါခြင်း' :
+                               isFlicker ? 'မီးချောင်းကဲ့သို့ လင်းလက်တုန်ခါခြင်း' : 'ညင်သာစွာ ပေါ်လာခြင်း';
+                const modsMy = [];
+                if (hasRotate) modsMy.push('စာလုံးလှည့်ခြင်း (Rotate)');
+                if (hasBlur) modsMy.push('Motion Blur');
+                if (lower.includes('fade')) modsMy.push('Opacity Fade');
+                else if (isRight || isLeft || isUp || isDown) modsMy.push('Fade မပါဘဲ Mask ဖြင့်ထွက်ခြင်း');
+                if (hasBounce) modsMy.push('Elastic Bounce');
+
+                descMy = `${uMy} ${moveMy}${modsMy.length ? ' — ' + modsMy.join(' + ') : ''} (${fpsBadge})`;
+            }
+
+            const staggerMs = unit === 'word' ? 130 : (unit === 'whole' ? 0 : 42);
+            const modTags = [unitLabel, dirLabel, fpsBadge];
 
             return {
                 rawName,
+                specialLayout,
                 unit,
                 unitLabel,
                 dirLabel,
                 kfName,
                 kfEase,
-                bStart,
-                rStart,
+                opStart,
+                txStart,
+                tyStart,
+                txOver,
+                tyOver,
+                txRebound,
+                tyRebound,
                 sxStart,
                 syStart,
-                sMid,
-                sSettle,
-                overshootX,
-                overshootY,
-                lsStart,
-                lsEnd,
+                sOver,
+                sRebound,
+                rotStart,
+                rotOver,
+                skewStart,
+                blurStart,
+                isRandomFlicker,
+                hasFade,
                 staggerMs,
                 fpsBadge,
                 modTags,
@@ -1046,20 +1383,21 @@
             const m = analyzeTextPluginMechanics(p);
             const cleanDefault = m.rawName.replace(/\s*\((60|30)\s*FPS\)/ig, '');
             const textToUse = (customTextStr && customTextStr.trim()) ? customTextStr.trim() : cleanDefault;
-            const styleVars = `--kf-name:${m.kfName}; --kf-ease:${m.kfEase}; --b-start:${m.bStart}; --r-start:${m.rStart}; --sx-start:${m.sxStart}; --sy-start:${m.syStart}; --s-start:${m.sxStart}; --s-mid:${m.sMid}; --s-settle:${m.sSettle}; --overshoot-x:${m.overshootX}; --overshoot-y:${m.overshootY}; --ls-start:${m.lsStart}; --ls-end:${m.lsEnd};`;
+            const styleVars = `--kf-name:${m.kfName}; --kf-ease:${m.kfEase}; --op-start:${m.opStart}; --tx-start:${m.txStart}; --ty-start:${m.tyStart}; --tx-over:${m.txOver}; --ty-over:${m.tyOver}; --tx-rebound:${m.txRebound}; --ty-rebound:${m.tyRebound}; --sx-start:${m.sxStart}; --sy-start:${m.syStart}; --s-over:${m.sOver}; --s-rebound:${m.sRebound}; --rot-start:${m.rotStart}; --rot-over:${m.rotOver}; --skew-start:${m.skewStart}; --blur-start:${m.blurStart};`;
             const sizeCls = isLargeMonitor ? 'text-2xl sm:text-4xl' : 'text-base sm:text-lg';
 
-            if (m.unit === 'lowerthird') {
+            // --- 1. SPECIALIZED UNIQUE GRAPHIC LAYOUTS ---
+            if (m.specialLayout === 'lt-accent-bar') {
                 return `
                     <div class="w-full flex items-center justify-start px-3" style="${styleVars}">
-                        <div class="flex items-stretch gap-2.5 bg-black/75 backdrop-blur-md border border-white/15 rounded-xl p-2.5 pr-5 shadow-2xl">
+                        <div class="flex items-stretch gap-2.5 bg-black/80 backdrop-blur-md border border-white/15 rounded-xl p-2.5 pr-5 shadow-2xl overflow-hidden">
                             <div class="lt-accent-bar w-1.5 rounded-full bg-[#d4ff00]"></div>
-                            <div class="text-left">
-                                <div class="anim-unit text-white font-black ${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'} leading-tight" style="--kf-delay: 60ms;">
+                            <div class="text-left overflow-hidden">
+                                <div class="anim-unit text-white font-black ${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'} leading-tight" style="--kf-name:kfUniversalMaster; --tx-start:-60px; --op-start:1; --kf-delay:80ms;">
                                     ${textToUse}
                                 </div>
-                                <div class="anim-unit text-[10px] font-mono text-[#d4ff00] uppercase tracking-widest mt-0.5" style="--kf-delay: 180ms;">
-                                    ${cleanDefault} • LIVE CALLOUT
+                                <div class="anim-unit text-[10px] font-mono text-[#d4ff00] uppercase tracking-widest mt-0.5" style="--kf-name:kfUniversalMaster; --tx-start:-40px; --op-start:0; --kf-delay:220ms;">
+                                    ALEX HORMOZI • ENTREPRENEUR
                                 </div>
                             </div>
                         </div>
@@ -1067,50 +1405,372 @@
                 `;
             }
 
-            if (m.unit === 'hormozi') {
-                const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
-                const spans = words.slice(0, 8).map((w, idx) =>
-                    `<span class="hormozi-word inline-block font-black uppercase mx-1" style="--kf-delay:${idx * 320}ms;">${w}</span>`
-                ).join('');
+            if (m.specialLayout === 'lt-broadcast-news') {
                 return `
-                    <div class="${sizeCls} font-display font-black tracking-tight leading-snug drop-shadow-[0_6px_18px_rgba(0,0,0,0.95)]">
-                        ${spans}
+                    <div class="w-full px-3" style="${styleVars}">
+                        <div class="rounded-xl overflow-hidden shadow-2xl border border-red-500/40 bg-black/90 text-left">
+                            <div class="flex items-center gap-2 bg-red-600 px-3 py-0.5 text-[9px] font-mono font-black text-white uppercase tracking-widest">
+                                <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                                <span>LIVE BREAKING NEWS</span>
+                            </div>
+                            <div class="px-3.5 py-2 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+                                <div class="anim-unit font-display font-black text-white uppercase ${isLargeMonitor ? 'text-lg sm:text-2xl' : 'text-xs sm:text-sm'} tracking-tight" style="--kf-name:kfFlip3D; --rx-start:-85deg;">
+                                    ${textToUse}
+                                </div>
+                            </div>
+                            <div class="bg-[#d4ff00] text-slate-950 px-3 py-0.5 overflow-hidden whitespace-nowrap text-[9px] font-mono font-extrabold uppercase">
+                                <div class="news-ticker-strip inline-block">
+                                    ⚡ BREAKING HEADLINE • SMART STUDIO LIVE BROADCAST GRAPHICS • 60 FPS REALTIME FEED ⚡
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
 
-            if (m.unit === 'tracking' || m.unit === 'glitch') {
+            if (m.specialLayout === 'lt-chapter-marker') {
                 return `
-                    <div class="anim-unit ${sizeCls} font-black uppercase text-white tracking-wider drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]" style="${styleVars}">
+                    <div class="w-full px-4" style="${styleVars}">
+                        <div class="border-l-2 border-r-2 border-[#d4ff00] px-4 py-2 bg-black/65 backdrop-blur-md rounded-lg text-center space-y-1">
+                            <div class="flex items-center justify-center gap-2 text-[9px] font-mono text-[#d4ff00] tracking-widest">
+                                <span>[ CHAPTER 01 ]</span>
+                                <span>•</span>
+                                <span>00:01:24:18</span>
+                            </div>
+                            <div class="anim-unit font-serif italic font-black text-white ${isLargeMonitor ? 'text-xl sm:text-3xl' : 'text-sm sm:text-base'} tracking-wide" style="--kf-name:kfUniversalMaster; --blur-start:8px; --sx-start:0.88; --op-start:0;">
+                                ${textToUse}
+                            </div>
+                            <div class="lt-horiz-line h-[1.5px] w-3/4 mx-auto bg-gradient-to-r from-transparent via-[#d4ff00] to-transparent"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'lt-location-pin') {
+                return `
+                    <div class="w-full px-3 flex items-center justify-start" style="${styleVars}">
+                        <div class="flex items-center gap-2.5 bg-black/75 border border-emerald-400/40 rounded-xl px-3.5 py-2 shadow-xl text-left">
+                            <div class="anim-unit text-xl sm:text-2xl" style="--kf-name:kfGravityBounce;">📍</div>
+                            <div>
+                                <div class="text-[8px] font-mono text-emerald-300 tracking-widest uppercase">35.6762° N, 139.6503° E // 08:30 PM</div>
+                                <div class="anim-unit font-mono font-black text-white ${isLargeMonitor ? 'text-lg sm:text-2xl' : 'text-xs sm:text-sm'} uppercase tracking-wider" style="--kf-name:kfUniversalMaster; --tx-start:35px; --op-start:0;">
+                                    ${textToUse}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'lt-twoline-split') {
+                return `
+                    <div class="w-full px-4 text-left" style="${styleVars}">
+                        <div class="overflow-hidden pb-1">
+                            <div class="anim-unit font-display font-black text-white uppercase ${isLargeMonitor ? 'text-xl sm:text-2xl' : 'text-sm sm:text-base'} tracking-wide" style="--kf-name:kfUniversalMaster; --ty-start:32px; --op-start:1;">
+                                ${textToUse}
+                            </div>
+                        </div>
+                        <div class="lt-horiz-line h-[2px] w-full bg-gradient-to-r from-[#d4ff00] via-sky-400 to-transparent my-0.5"></div>
+                        <div class="overflow-hidden pt-1">
+                            <div class="anim-unit font-mono text-[10px] text-sky-300 uppercase tracking-[0.22em]" style="--kf-name:kfUniversalMaster; --ty-start:-28px; --op-start:1;">
+                                EXECUTIVE CREATIVE DIRECTOR
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'lt-quote-card') {
+                return `
+                    <div class="w-full px-4 text-center" style="${styleVars}">
+                        <div class="bg-black/65 border border-amber-300/30 rounded-2xl p-3 shadow-xl relative">
+                            <div class="text-amber-300 font-serif text-2xl leading-none">“</div>
+                            <div class="anim-unit font-serif italic text-white font-bold ${isLargeMonitor ? 'text-lg sm:text-2xl' : 'text-xs sm:text-sm'} leading-snug px-2" style="--kf-name:kfUniversalMaster; --sx-start:0.8; --s-over:1.08; --op-start:0;">
+                                ${textToUse}
+                            </div>
+                            <div class="text-[9px] font-mono text-amber-300/90 uppercase tracking-widest mt-1">— MODERN QUOTE CALLOUT</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'lt-social-pill') {
+                return `
+                    <div class="w-full flex items-center justify-center px-3" style="${styleVars}">
+                        <div class="anim-unit inline-flex items-center gap-2.5 bg-white text-slate-950 rounded-full p-1.5 pl-2.5 pr-3 shadow-[0_10px_30px_rgba(0,0,0,0.8)]" style="--kf-name:kfUniversalMaster; --sx-start:0.15; --sy-start:0.15; --s-over:1.18; --op-start:0;">
+                            <span class="w-6 h-6 rounded-full bg-slate-950 text-[#d4ff00] flex items-center justify-center text-xs font-black">@</span>
+                            <span class="font-mono font-black ${isLargeMonitor ? 'text-base sm:text-xl' : 'text-xs'} tracking-tight">${textToUse}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-black uppercase">FOLLOW +</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- SUBTITLES & CAPTIONS SPECIALIZED LAYOUTS ---
+            if (m.specialLayout === 'sub-karaoke-sweep') {
+                return `
+                    <div class="px-3 text-center">
+                        <div class="inline-block bg-black/75 px-4 py-1.5 rounded-xl border border-white/10">
+                            <span class="karaoke-fill-text ${sizeCls} font-display font-black uppercase tracking-wide">
+                                ${textToUse}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'sub-cinema-yellow') {
+                return `
+                    <div class="px-3 text-center" style="${styleVars}">
+                        <div class="anim-unit ${sizeCls} font-sans font-bold text-[#fde047] tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.98)]" style="--kf-name:kfUniversalMaster; --ty-start:16px; --blur-start:4px; --op-start:0; -webkit-text-stroke: 0.8px #000;">
+                            “ ${textToUse} ”
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'sub-pill-expand') {
+                return `
+                    <div class="px-3 text-center" style="${styleVars}">
+                        <div class="anim-unit inline-block bg-[#d4ff00] text-slate-950 px-5 py-1.5 rounded-full font-display font-black uppercase ${isLargeMonitor ? 'text-xl sm:text-3xl' : 'text-xs sm:text-sm'} shadow-[0_8px_25px_rgba(212,255,0,0.45)]" style="--kf-name:kfUniversalMaster; --sx-start:0.15; --sy-start:0.85; --s-over:1.12; --op-start:0;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'sub-reels-slam') {
+                return `
+                    <div class="px-3 text-center" style="${styleVars}">
+                        <div class="anim-unit inline-block bg-red-600 text-white px-3.5 py-1 rounded-lg font-display font-black uppercase italic ${sizeCls} -rotate-2 shadow-2xl border-2 border-white" style="--kf-name:kfSlamImpact;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'sub-hormozi-multi') {
+                const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
+                const colors = ['#22c55e', '#facc15', '#38bdf8', '#f43f5e'];
+                const spans = words.slice(0, 8).map((w, idx) =>
+                    `<span class="hormozi-word inline-block font-black uppercase mx-1" style="--kf-delay:${idx * 300}ms; --pop-bg:${colors[idx % colors.length]}; --pop-rot:${idx % 2 === 0 ? '-2.5deg' : '2.5deg'};">${w}</span>`
+                ).join('');
+                return `<div class="${sizeCls} font-display font-black tracking-tight leading-snug drop-shadow-[0_6px_18px_rgba(0,0,0,0.95)]">${spans}</div>`;
+            }
+
+            if (m.specialLayout === 'sub-typewriter-cursor') {
+                const chars = segmentMyanmarAndLatinChars(textToUse);
+                const charSpans = chars.slice(0, 24).map((ch, idx) => {
+                    if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
+                    return `<span class="ma-char anim-unit font-mono" style="--kf-name:kfUniversalMaster; --op-start:0; --kf-ease:steps(1,end); --kf-delay:${idx * 65}ms;">${ch}</span>`;
+                }).join('');
+                return `
+                    <div class="${sizeCls} font-mono font-black text-emerald-300 bg-black/80 px-3.5 py-1.5 rounded-lg border border-emerald-400/30 inline-block">
+                        ${charSpans}<span class="inline-block w-2.5 h-5 bg-[#d4ff00] ml-1 animate-ping align-middle"></span>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'sub-gaming-3d') {
+                return `
+                    <div class="px-2 text-center" style="${styleVars}">
+                        <div class="anim-unit font-display font-black uppercase ${sizeCls} text-white tracking-wider" style="--kf-name:kfUniversalMaster; --sx-start:0.1; --sy-start:0.1; --s-over:1.28; --s-rebound:0.88; --op-start:0; text-shadow: 0 4px 0 #ff0055, 0 8px 0 #000, 0 12px 24px rgba(0,240,255,0.75); -webkit-text-stroke: 1.5px #000;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- CINEMATIC & GLITCH SPECIALIZED LAYOUTS ---
+            if (m.specialLayout === 'a24-luxury') {
+                return `
+                    <div class="px-4 text-center space-y-1" style="${styleVars}">
+                        <div class="text-[8px] font-mono text-amber-200/80 tracking-[0.35em] uppercase">A24 MOTION PICTURE PRESENTATION</div>
+                        <div class="anim-unit font-serif font-black uppercase text-white ${isLargeMonitor ? 'text-3xl sm:text-5xl' : 'text-lg sm:text-2xl'} tracking-[0.22em]" style="--kf-name:kfTracking; --ls-start:0.02em; --ls-end:0.26em; --sx-start:0.92; --blur-start:3px;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'ambient-wave') {
+                const chars = segmentMyanmarAndLatinChars(textToUse);
+                const spans = chars.slice(0, 22).map((ch, idx) => {
+                    if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
+                    return `<span class="ma-char anim-unit" style="--kf-name:kfAmbientFloat; --kf-dur:2.4s; --kf-ease:ease-in-out; --kf-delay:${idx * 110}ms;">${ch}</span>`;
+                }).join('');
+                return `<div class="${sizeCls} font-serif italic font-bold text-sky-100 tracking-widest">${spans}</div>`;
+            }
+
+            if (m.specialLayout === 'tracking-contract') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white" style="--kf-name:kfTracking; --ls-start:0.52em; --ls-end:0.01em; --sx-start:1.18; --blur-start:6px;">
                         ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'tracking-expand') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white" style="--kf-name:kfTracking; --ls-start:-0.06em; --ls-end:0.35em; --sx-start:0.90; --blur-start:4px;">
+                        ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'doc-location') {
+                return `
+                    <div class="px-4 text-left border-l-4 border-amber-400 pl-3 bg-black/50 py-1.5 rounded-r-lg">
+                        <div class="text-[9px] font-mono text-amber-300 tracking-[0.25em] uppercase">DOCUMENTARY ARCHIVE // 1998</div>
+                        <div class="anim-unit font-sans font-black uppercase text-white ${sizeCls} tracking-wide" style="--kf-name:kfUniversalMaster; --tx-start:-40px; --op-start:0;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'editorial-serif') {
+                const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
+                const spans = words.slice(0, 8).map((w, idx) =>
+                    `<span class="ma-word anim-unit ${idx % 2 === 1 ? 'font-serif italic text-amber-200' : 'font-sans text-white'}" style="--kf-name:kfUniversalMaster; --ty-start:18px; --op-start:0; --kf-delay:${idx * 160}ms;">${w}</span>`
+                ).join('');
+                return `<div class="${sizeCls} font-bold tracking-wide">${spans}</div>`;
+            }
+
+            if (m.specialLayout === 'optical-defocus') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-serif font-black uppercase text-white tracking-widest" style="--kf-name:kfUniversalMaster; --blur-start:18px; --sx-start:1.22; --sy-start:1.22; --op-start:0;">
+                        ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'breathing-pulse') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-sans font-extrabold uppercase text-sky-200 tracking-[0.2em]" style="--kf-name:kfBreathingPulse; --kf-dur:2.6s; --kf-ease:ease-in-out;">
+                        ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'vhs-osd') {
+                return `
+                    <div class="w-full px-3 text-left font-mono">
+                        <div class="flex justify-between text-[10px] text-emerald-400 font-bold mb-1">
+                            <span>▶ PLAY // VHS-HQ</span>
+                            <span>SP 00:04:19</span>
+                        </div>
+                        <div class="anim-unit ${sizeCls} font-mono font-black uppercase text-white tracking-wider" style="--kf-name:kfVhsTracking; text-shadow: -2px 0 #ff0055, 2px 0 #00ff88;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'cyber-hud') {
+                return `
+                    <div class="border border-cyan-400/60 bg-cyan-950/40 px-4 py-2 rounded-lg text-center relative">
+                        <div class="text-[8px] font-mono text-cyan-300 tracking-[0.25em] uppercase mb-0.5">[ SYS.TELEMETRY // LOCK 99.8% ]</div>
+                        <div class="anim-unit font-mono font-black uppercase text-[#d4ff00] ${sizeCls} tracking-wider" style="--kf-name:kfFlicker;">
+                            ${textToUse}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'matrix-terminal') {
+                const chars = segmentMyanmarAndLatinChars(textToUse);
+                const spans = chars.slice(0, 22).map((ch, idx) => {
+                    if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
+                    return `<span class="ma-char anim-unit font-mono text-[#00ff66]" style="--kf-name:kfUniversalMaster; --ty-start:-30px; --op-start:0; --blur-start:4px; --kf-delay:${idx * 55}ms; text-shadow: 0 0 10px #00ff66;">${ch}</span>`;
+                }).join('');
+                return `<div class="${sizeCls} font-mono font-black uppercase">${spans}</div>`;
+            }
+
+            if (m.specialLayout === 'neon-tube') {
+                const chars = segmentMyanmarAndLatinChars(textToUse);
+                const spans = chars.slice(0, 22).map((ch, idx) => {
+                    if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
+                    return `<span class="ma-char anim-unit" style="--kf-name:kfFlicker; --kf-delay:${(idx * 95) % 450}ms; text-shadow: 0 0 8px #ff00aa, 0 0 22px #ff00aa, 0 0 38px #00f0ff;">${ch}</span>`;
+                }).join('');
+                return `<div class="${sizeCls} font-display font-black uppercase text-white">${spans}</div>`;
+            }
+
+            if (m.specialLayout === 'rgb-split') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white tracking-wider" style="--kf-name:kfRgbSplit; --kf-dur:1.6s;">
+                        ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'synthwave-80s') {
+                return `
+                    <div class="text-center">
+                        <div class="anim-unit ${sizeCls} font-serif italic font-black uppercase bg-gradient-to-b from-white via-pink-300 to-fuchsia-600 bg-clip-text text-transparent drop-shadow-[0_4px_15px_rgba(236,72,153,0.8)]" style="--kf-name:kfUniversalMaster; --sx-start:0.5; --sy-start:0.5; --s-over:1.15; --op-start:0;">
+                            ${textToUse}
+                        </div>
+                        <div class="text-[8px] font-mono text-cyan-300 tracking-[0.35em] uppercase mt-0.5">━ 1984 RETRO SYNTHWAVE ━</div>
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'strobe-impact') {
+                return `
+                    <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white px-3 py-1 bg-black/70 border-2 border-[#d4ff00]" style="--kf-name:kfStrobeFlash; --kf-dur:1.2s;">
+                        ${textToUse}
+                    </div>
+                `;
+            }
+
+            if (m.specialLayout === 'tricolor-stack') {
+                return `
+                    <div class="relative py-2 text-center">
+                        <div class="anim-unit ${sizeCls} font-display font-black uppercase text-cyan-400/80 leading-none" style="--kf-name:kfUniversalMaster; --ty-start:16px; --op-start:0; --kf-delay:0ms;">${textToUse}</div>
+                        <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white leading-none -mt-1" style="--kf-name:kfUniversalMaster; --sx-start:0.8; --op-start:0; --kf-delay:90ms;">${textToUse}</div>
+                        <div class="anim-unit ${sizeCls} font-display font-black uppercase text-rose-500/80 leading-none -mt-1" style="--kf-name:kfUniversalMaster; --ty-start:-16px; --op-start:0; --kf-delay:180ms;">${textToUse}</div>
+                    </div>
+                `;
+            }
+
+            // --- 2. PARAMETERIZED UNIVERSAL ENGINE FOR ALL 136 NEOEDIT 60FPS / 30FPS PRESETS ---
+            // Hard clip-mask wrapper when Fade is NOT present so non-fade slides look visibly distinct from fade slides!
+            const maskCls = (!m.hasFade) ? 'overflow-hidden py-1 px-2 border-l-2 border-[#d4ff00]/60 bg-black/30 rounded' : '';
+
+            if (m.unit === 'whole') {
+                return `
+                    <div class="${maskCls} inline-block">
+                        <div class="anim-unit ${sizeCls} font-display font-black uppercase text-white tracking-tight leading-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)]" style="${styleVars}">
+                            ${textToUse}
+                        </div>
                     </div>
                 `;
             }
 
             if (m.unit === 'word') {
                 const words = textToUse.includes(' ') ? textToUse.split(/\s+/) : segmentMyanmarAndLatinChars(textToUse).filter(s => s.trim());
-                const spans = words.slice(0, 8).map((w, idx) =>
-                    `<span class="ma-word anim-unit" style="${styleVars} --kf-delay:${idx * m.staggerMs}ms;">${w}</span>`
-                ).join('');
+                const spans = words.slice(0, 8).map((w, idx) => {
+                    const delay = m.isRandomFlicker ? ((idx * 197 + p.id * 31) % 420) : (idx * m.staggerMs);
+                    return `<span class="ma-word anim-unit" style="${styleVars} --kf-delay:${delay}ms;">${w}</span>`;
+                }).join('');
                 return `
-                    <div class="${sizeCls} font-display font-black uppercase text-white tracking-tight leading-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)]">
+                    <div class="${maskCls} ${sizeCls} font-display font-black uppercase text-white tracking-tight leading-tight drop-shadow-[0_4px_14px_rgba(0,0,0,0.9)]">
                         ${spans}
                     </div>
                 `;
             }
 
-            // Default: Per-Character (Letter-by-Letter / Myanmar Syllable-by-Syllable) or Typewriter
+            // Per-Character (Letter-by-Letter / Myanmar Syllable-by-Syllable)
             const chars = segmentMyanmarAndLatinChars(textToUse);
             const charSpans = chars.slice(0, 26).map((ch, idx) => {
                 if (!ch.trim()) return `<span class="inline-block w-2"> </span>`;
-                return `<span class="ma-char anim-unit" style="${styleVars} --kf-delay:${idx * m.staggerMs}ms;">${ch}</span>`;
+                const delay = m.isRandomFlicker ? ((idx * 173 + p.id * 43) % 480) : (idx * m.staggerMs);
+                return `<span class="ma-char anim-unit" style="${styleVars} --kf-delay:${delay}ms;">${ch}</span>`;
             }).join('');
 
-            const cursorHtml = m.unit === 'typewriter' ? `<span class="inline-block w-2 h-5 bg-[#d4ff00] ml-1 animate-pulse align-middle"></span>` : '';
-
             return `
-                <div class="${sizeCls} font-black uppercase text-white tracking-wide leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
-                    ${charSpans}${cursorHtml}
+                <div class="${maskCls} ${sizeCls} font-black uppercase text-white tracking-wide leading-tight drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+                    ${charSpans}
                 </div>
             `;
         }
@@ -1317,9 +1977,10 @@
             `;
         }
 
-        // (C) MOTION & TRANSITION CARD (Live Dual-Clip Transition Simulation)
+        // (C) MOTION & TRANSITION CARD (Per-Plugin Distinct Live Transition / Tunnel / Audio Reactive Simulation)
         function buildMotionPluginCardHtml(p, idx) {
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
+            const lower = rawName.toLowerCase() + ' ' + (p.subcategory || '').toLowerCase();
             const safeNameAttr = p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const clipA = SAMPLE_VIDEOS[idx % SAMPLE_VIDEOS.length];
             const clipB = SAMPLE_VIDEOS[(idx + 1) % SAMPLE_VIDEOS.length];
@@ -1328,6 +1989,46 @@
             if (currentOrientation === 'vertical') aspectCls = 'aspect-[9/13] max-h-[360px] mx-auto';
             else if (currentOrientation === 'square') aspectCls = 'aspect-square max-h-[320px] mx-auto';
 
+            // Choose distinct motion class & badge per plugin name/id
+            let motionClass = 'motion-clip-b';
+            let motionTag = 'WIPE TRANSITION';
+            let overlayGraphic = '';
+
+            if (lower.includes('audio') || lower.includes('spectrum') || lower.includes('waveform') || lower.includes('freq')) {
+                motionClass = 'motion-zoom';
+                motionTag = 'AUDIO REACTIVE';
+                overlayGraphic = `
+                    <div class="flex items-end justify-center gap-1 h-10 mb-2">
+                        ${Array.from({length: 14}).map((_, i) => `<span class="w-1.5 bg-[#d4ff00] rounded-t" style="height:${25 + ((i * 23 + p.id * 7) % 75)}%;animation:kfBreathingPulse ${0.45 + (i % 5) * 0.12}s ease-in-out infinite alternate;"></span>`).join('')}
+                    </div>
+                `;
+            } else if (lower.includes('tunnel') || lower.includes('vortex') || lower.includes('wormhole') || lower.includes('hyper')) {
+                motionClass = 'motion-tunnel';
+                motionTag = '3D TUNNEL GENERATOR';
+                overlayGraphic = `
+                    <div class="relative w-14 h-14 mb-1.5 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full border-2 border-cyan-400/70 animate-ping"></div>
+                        <div class="w-9 h-9 rounded-full border-2 border-[#d4ff00]/80"></div>
+                        <div class="w-4 h-4 rounded-full bg-white/90"></div>
+                    </div>
+                `;
+            } else if (lower.includes('spin') || lower.includes('rotate') || lower.includes('twirl') || lower.includes('swirl')) {
+                motionClass = 'motion-spin';
+                motionTag = 'SPIN / ROTATE';
+            } else if (lower.includes('whip') || lower.includes('pan') || lower.includes('slide') || lower.includes('push')) {
+                motionClass = 'motion-whip';
+                motionTag = 'WHIP PAN';
+            } else if (lower.includes('zoom') || lower.includes('scale') || lower.includes('punch') || (p.id % 4 === 1)) {
+                motionClass = 'motion-zoom';
+                motionTag = 'ZOOM / WARP';
+            } else if (p.id % 4 === 2) {
+                motionClass = 'motion-whip';
+                motionTag = 'DIRECTIONAL PUSH';
+            } else if (p.id % 4 === 3) {
+                motionClass = 'motion-spin';
+                motionTag = 'ANGULAR TRANSITION';
+            }
+
             return `
                 <div
                     class="ma-card group relative rounded-xl overflow-hidden bg-[#101324] border border-[#1f2442] hover:border-[#d4ff00] transition-all duration-300 shadow-lg hover:shadow-[0_12px_35px_rgba(0,0,0,0.8)] cursor-pointer select-none"
@@ -1335,21 +2036,22 @@
                 >
                     <div class="relative w-full ${aspectCls} bg-black overflow-hidden">
                         <!-- Clip A -->
-                        <video src="${clipA}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover"></video>
-                        <!-- Clip B Animated Transition Wipe -->
-                        <div class="motion-clip-b absolute inset-0">
+                        <video src="${clipA}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-75"></video>
+                        <!-- Clip B Animated Transition with Per-Plugin Mechanics -->
+                        <div class="${motionClass} absolute inset-0">
                             <video src="${clipB}" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/40"></div>
 
-                        <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-sky-500/90 text-slate-950 text-[9px] font-mono font-black uppercase">
-                            🚀 MOTION / TRANSITION
+                        <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-sky-400 text-slate-950 text-[9px] font-mono font-black uppercase">
+                            🚀 ${motionTag}
                         </div>
                         <div class="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded bg-black/75 text-white text-[9px] font-mono font-bold border border-white/15">
                             ${p.ext}
                         </div>
 
                         <div class="absolute inset-0 flex flex-col items-center justify-center p-4 pb-10 text-center z-10 pointer-events-none">
+                            ${overlayGraphic}
                             <span class="text-[9px] font-mono text-sky-300 uppercase tracking-widest mb-1">${p.subcategory}</span>
                             <h4 class="font-display text-base sm:text-lg font-black uppercase text-white tracking-wide drop-shadow-[0_4px_14px_rgba(0,0,0,0.95)] line-clamp-2">
                                 ${rawName}
@@ -1373,9 +2075,10 @@
             `;
         }
 
-        // (D) VFX & SHADER CARD (Live Optical / Glitch / CRT Shader Video Preview)
+        // (D) VFX & SHADER CARD (Per-Plugin Distinct Optical / Glitch / CRT / Halation / Kaleidoscope Shader Preview)
         function buildEffectPluginCardHtml(p, idx) {
             const rawName = p.name.replace(/^[✨⚡👑🔥\s]+/, '');
+            const lower = rawName.toLowerCase() + ' ' + (p.subcategory || '').toLowerCase();
             const safeNameAttr = p.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
             const vidSrc = SAMPLE_VIDEOS[(idx + 2) % SAMPLE_VIDEOS.length];
             const hue = (p.id * 47) % 360;
@@ -1383,6 +2086,31 @@
             let aspectCls = 'aspect-video';
             if (currentOrientation === 'vertical') aspectCls = 'aspect-[9/13] max-h-[360px] mx-auto';
             else if (currentOrientation === 'square') aspectCls = 'aspect-square max-h-[320px] mx-auto';
+
+            let shaderFilter = `contrast(1.4) saturate(1.85) hue-rotate(${hue}deg)`;
+            let shaderBadge = '✨ VFX SHADER';
+            let extraOverlay = '';
+
+            if (lower.includes('crt') || lower.includes('scanline') || lower.includes('vhs') || lower.includes('retro')) {
+                shaderFilter = `contrast(1.35) saturate(1.45) sepia(0.28) hue-rotate(-12deg)`;
+                shaderBadge = '📺 CRT / VHS EMULATOR';
+                extraOverlay = `<div class="absolute inset-0 pointer-events-none opacity-45" style="background:repeating-linear-gradient(0deg,rgba(0,0,0,0.65) 0px,rgba(0,0,0,0.65) 2px,transparent 2px,transparent 4px);"></div>`;
+            } else if (lower.includes('glitch') || lower.includes('rgb') || lower.includes('chromatic') || lower.includes('aberration')) {
+                shaderFilter = `contrast(1.55) saturate(2.1) hue-rotate(${hue}deg)`;
+                shaderBadge = '⚡ RGB GLITCH SHADER';
+                extraOverlay = `<div class="absolute inset-0 pointer-events-none mix-blend-screen opacity-50" style="animation:kfRgbSplit 1.2s steps(6) infinite;background:linear-gradient(90deg,rgba(255,0,85,0.25),transparent,rgba(0,240,255,0.25));"></div>`;
+            } else if (lower.includes('halation') || lower.includes('glow') || lower.includes('bloom') || lower.includes('light') || lower.includes('flare')) {
+                shaderFilter = `brightness(1.22) contrast(1.25) saturate(1.65) drop-shadow(0 0 12px rgba(255,120,60,0.8))`;
+                shaderBadge = '☀️ OPTICAL HALATION / GLOW';
+                extraOverlay = `<div class="absolute inset-0 pointer-events-none mix-blend-screen" style="background:radial-gradient(circle at 65% 35%, rgba(255,140,50,0.45), transparent 60%);"></div>`;
+            } else if (lower.includes('kaleido') || lower.includes('mirror') || lower.includes('prism') || lower.includes('fractal')) {
+                shaderFilter = `contrast(1.45) saturate(1.9) hue-rotate(${hue}deg)`;
+                shaderBadge = '💎 PRISM / KALEIDOSCOPE';
+                extraOverlay = `<div class="absolute inset-0 pointer-events-none border-x-4 border-fuchsia-400/30" style="backdrop-filter:hue-rotate(90deg);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);"></div>`;
+            } else if (lower.includes('displace') || lower.includes('warp') || lower.includes('ripple') || lower.includes('wave') || lower.includes('liquid')) {
+                shaderFilter = `contrast(1.35) saturate(1.6) hue-rotate(${(hue + 60) % 360}deg)`;
+                shaderBadge = '🌊 DISPLACEMENT / WARP';
+            }
 
             return `
                 <div
@@ -1393,12 +2121,13 @@
                     <div class="relative w-full ${aspectCls} bg-black overflow-hidden">
                         <video src="${vidSrc}" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-85"></video>
                         <div class="card-split-after absolute inset-0" style="clip-path: inset(0 0 0 42%);">
-                            <video src="${vidSrc}" autoplay loop muted playsinline class="w-full h-full object-cover" style="filter: contrast(1.4) saturate(1.9) hue-rotate(${hue}deg);"></video>
+                            <video src="${vidSrc}" autoplay loop muted playsinline class="w-full h-full object-cover" style="filter: ${shaderFilter};"></video>
+                            ${extraOverlay}
                         </div>
                         <div class="card-split-line absolute inset-y-0 w-[1.5px] bg-fuchsia-400 shadow-[0_0_10px_#e879f9] z-20 pointer-events-none" style="left: 42%;"></div>
 
                         <div class="absolute top-2.5 left-2.5 z-20 px-2 py-0.5 rounded bg-fuchsia-500/90 text-white text-[9px] font-mono font-black uppercase">
-                            ✨ VFX SHADER
+                            ${shaderBadge}
                         </div>
                         <div class="absolute top-2.5 right-2.5 z-20 px-2 py-0.5 rounded bg-black/75 text-white text-[9px] font-mono font-bold border border-white/15">
                             ${p.ext}
